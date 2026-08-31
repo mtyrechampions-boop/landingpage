@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://mobiletyrechampions.com
+
+# Sitemaps
+Sitemap: https://mobiletyrechampions.com/sitemap.xml
