@@ -32,7 +32,7 @@ const LandingHero = () => {
           loop
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover scale-[1.22] origin-top"
         >
           <source src="/mtc-hero-video.mp4" type="video/mp4" />
         </video>
