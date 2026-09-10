@@ -86,7 +86,7 @@ export default function LandingPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(landingSchema) }}
       />
 
-      {/* 1. Minimal Header (Logo + 24/7 Live Status + Call CTA) */}
+      {/* 1. Header (24/7 status strip + main-site navigation linking to mobiletyrechampions.com + Call CTA) */}
       <LandingHeader />
 
       {/* 2. Hero — Emergency Response */}
