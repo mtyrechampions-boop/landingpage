@@ -6,7 +6,7 @@ import { Phone, ChevronDown, ArrowRight, Menu, X } from 'lucide-react';
 import { MTC_NAV, MTC_HOME_URL, PHONE_HREF, PHONE_DISPLAY } from '@/data/mtcNavigation';
 
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FB7E10] focus-visible:ring-offset-2';
-const DESKTOP_LINK = `flex items-center gap-1 rounded-lg px-2.5 xl:px-3 py-2 text-sm xl:text-[15px] font-bold whitespace-nowrap transition-colors ${FOCUS_RING}`;
+const DESKTOP_LINK = `flex items-center gap-1 rounded-lg px-2.5 xl:px-3 2xl:px-4 py-2.5 text-[15px] xl:text-[17px] font-bold whitespace-nowrap transition-colors ${FOCUS_RING}`;
 const HOVER_CLOSE_DELAY = 150;
 
 const LandingHeader = () => {
@@ -225,23 +225,23 @@ const LandingHeader = () => {
         </div>
 
         <div className={`bg-white/95 backdrop-blur-xl border-b border-gray-200 transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
-          <nav ref={navRef} aria-label="Main" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className={`flex items-center justify-between gap-3 transition-[height] duration-300 ${scrolled ? 'h-14 lg:h-16' : 'h-16 lg:h-[76px]'}`}>
+          <nav ref={navRef} aria-label="Main" className="max-w-7xl 2xl:max-w-[92rem] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className={`flex items-center justify-between gap-3 transition-[height] duration-300 ${scrolled ? 'h-14 lg:h-[72px] xl:h-20' : 'h-16 lg:h-[84px] xl:h-24'}`}>
 
               {/* Logo → main site home */}
               <a href={MTC_HOME_URL} className={`shrink-0 rounded-lg ${FOCUS_RING}`}>
                 <Image
                   src="/images/MTC logo 2.webp"
                   alt="Mobile Tyre Champions"
-                  width={56}
-                  height={56}
-                  className={`transition-all duration-300 ${scrolled ? 'w-10 h-10 lg:w-11 lg:h-11' : 'w-11 h-11 lg:w-14 lg:h-14'}`}
+                  width={80}
+                  height={80}
+                  className={`transition-all duration-300 ${scrolled ? 'w-10 h-10 lg:w-14 lg:h-14 xl:w-16 xl:h-16' : 'w-11 h-11 lg:w-16 lg:h-16 xl:w-20 xl:h-20'}`}
                   priority
                 />
               </a>
 
               {/* Desktop navigation */}
-              <ul className="hidden lg:flex items-center gap-0.5 xl:gap-1">
+              <ul className="hidden lg:flex items-center gap-0.5 xl:gap-1 2xl:gap-2">
                 {MTC_NAV.map((entry) =>
                   entry.items ? (
                     renderDropdown(entry)
@@ -261,12 +261,12 @@ const LandingHeader = () => {
                   href={PHONE_HREF}
                   data-conversion="phone-call"
                   aria-label={`Call now on ${PHONE_DISPLAY}`}
-                  className={`hidden lg:flex items-center gap-2.5 bg-[#FB7E10] hover:bg-orange-600 text-white pl-4 pr-5 py-2.5 rounded-xl shadow-lg shadow-orange-500/20 active:scale-95 transition-all ${FOCUS_RING}`}
+                  className={`hidden lg:flex items-center gap-3 bg-[#FB7E10] hover:bg-orange-600 text-white pl-5 pr-6 py-3 xl:py-3.5 rounded-2xl shadow-lg shadow-orange-500/20 active:scale-95 transition-all ${FOCUS_RING}`}
                 >
-                  <Phone size={18} className="fill-current shrink-0" aria-hidden="true" />
+                  <Phone size={20} className="fill-current shrink-0" aria-hidden="true" />
                   <span className="flex flex-col leading-tight text-left">
-                    <span className="font-black text-sm uppercase tracking-wider">Call Now</span>
-                    <span className="hidden xl:block text-xs font-bold text-white/85 tracking-wide">{PHONE_DISPLAY}</span>
+                    <span className="font-black text-[15px] xl:text-base uppercase tracking-wider">Call Now</span>
+                    <span className="hidden xl:block text-sm font-bold text-white/85 tracking-wide">{PHONE_DISPLAY}</span>
                   </span>
                 </a>
 
@@ -298,7 +298,7 @@ const LandingHeader = () => {
       </header>
 
       {/* Reserves the header's expanded height (strip 32px + nav + 1px border) so content never sits underneath it */}
-      <div aria-hidden="true" className="h-[97px] lg:h-[109px]" />
+      <div aria-hidden="true" className="h-[97px] lg:h-[117px] xl:h-[129px]" />
 
       {/* Mobile drawer — outside <header> so it stacks above the fixed bottom bar */}
       <div
