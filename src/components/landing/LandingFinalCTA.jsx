@@ -59,7 +59,7 @@ const LandingFinalCTA = () => {
 
           {/* Action buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 pt-4">
-            <div className="w-full sm:w-auto animate-zoom-pulse">
+            <div className="w-full sm:w-auto animate-zoom-pulse sm:order-2">
               <a
                 href="tel:02071013856"
                 data-conversion="phone-call"
@@ -73,7 +73,7 @@ const LandingFinalCTA = () => {
             <a
               href="#postcode-checker"
               data-conversion="availability-check"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 px-8 py-4 md:py-5 rounded-2xl font-bold text-base md:text-lg uppercase tracking-wider transition-all shadow-lg active:scale-95 text-center backdrop-blur-md"
+              className="w-full sm:w-auto sm:order-1 flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 px-8 py-4 md:py-5 rounded-2xl font-bold text-base md:text-lg uppercase tracking-wider transition-all shadow-lg active:scale-95 text-center backdrop-blur-md"
             >
               <Calendar size={20} className="text-[#FB7E10]" />
               <span>CHECK AVAILABILITY</span>

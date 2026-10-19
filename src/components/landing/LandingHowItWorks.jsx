@@ -105,14 +105,14 @@ const LandingHowItWorks = () => {
             <a
               href="tel:02071013856"
               data-conversion="phone-call"
-              className="w-full sm:w-auto bg-[#FB7E10] hover:bg-orange-600 text-white px-8 py-4 rounded-2xl font-black text-base uppercase tracking-wider shadow-lg active:scale-95 transition-all"
+              className="w-full sm:w-auto sm:order-2 bg-[#FB7E10] hover:bg-orange-600 text-white px-8 py-4 rounded-2xl font-black text-base uppercase tracking-wider shadow-lg active:scale-95 transition-all"
             >
               CALL 0207 101 3856 NOW
             </a>
             <a
               href="#postcode-checker"
               data-conversion="availability-check"
-              className="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 text-gray-800 border border-gray-200 px-8 py-4 rounded-2xl font-bold text-base uppercase tracking-wider transition-all active:scale-95"
+              className="w-full sm:w-auto sm:order-1 bg-gray-100 hover:bg-gray-200 text-gray-800 border border-gray-200 px-8 py-4 rounded-2xl font-bold text-base uppercase tracking-wider transition-all active:scale-95"
             >
               Check Availability
             </a>

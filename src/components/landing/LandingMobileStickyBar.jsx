@@ -13,7 +13,7 @@ const LandingMobileStickyBar = () => {
           href="tel:02071013856"
           data-conversion="phone-call"
           aria-label="Call now on 0207 101 3856"
-          className="flex items-center justify-center gap-2 bg-[#FB7E10] hover:bg-orange-600 text-white py-3.5 px-3 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-orange-500/25 active:scale-95 transition-transform text-center whitespace-nowrap"
+          className="order-2 flex items-center justify-center gap-2 bg-[#FB7E10] hover:bg-orange-600 text-white py-3.5 px-3 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-orange-500/25 active:scale-95 transition-transform text-center whitespace-nowrap"
         >
           <Phone size={16} className="fill-current animate-bounce" />
           <span>CALL NOW</span>
@@ -23,7 +23,7 @@ const LandingMobileStickyBar = () => {
         <a
           href="#postcode-checker"
           data-conversion="availability-check"
-          className="flex items-center justify-center gap-1.5 bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-900 py-3.5 px-2 rounded-2xl font-bold text-[11px] min-[390px]:text-xs uppercase tracking-wider shadow-sm active:scale-95 transition-transform text-center whitespace-nowrap"
+          className="order-1 flex items-center justify-center gap-1.5 bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-900 py-3.5 px-2 rounded-2xl font-bold text-[11px] min-[390px]:text-xs uppercase tracking-wider shadow-sm active:scale-95 transition-transform text-center whitespace-nowrap"
         >
           <Calendar size={15} className="text-[#FB7E10] shrink-0" />
           <span><span className="hidden min-[390px]:inline">CHECK </span>AVAILABILITY</span>

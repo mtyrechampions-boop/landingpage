@@ -12,6 +12,7 @@ import LandingFAQ from '@/components/landing/LandingFAQ';
 import LandingFinalCTA from '@/components/landing/LandingFinalCTA';
 import LandingFooter from '@/components/landing/LandingFooter';
 import LandingMobileStickyBar from '@/components/landing/LandingMobileStickyBar';
+import LandingWhatsAppFloat from '@/components/landing/LandingWhatsAppFloat';
 import { SERVICE_AREAS_TEXT } from '@/lib/siteText';
 
 export const metadata = {
@@ -124,6 +125,9 @@ export default function LandingPage() {
 
       {/* 13. Mobile Sticky Bottom Conversion Bar */}
       <LandingMobileStickyBar />
+
+      {/* 14. Floating WhatsApp Chat Button (right side) */}
+      <LandingWhatsAppFloat />
     </div>
   );
 }
