@@ -58,14 +58,14 @@ const LandingFinalCTA = () => {
           </div>
 
           {/* Action buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 sm:gap-4 pt-4">
             <div className="w-full sm:w-auto animate-zoom-pulse sm:order-2">
               <a
                 href="tel:02071013856"
                 data-conversion="phone-call"
-                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-gradient-to-r from-[#FB7E10] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black text-lg md:text-xl uppercase tracking-wider shadow-2xl shadow-orange-500/30 active:scale-95 transition-all text-center border border-orange-400/30"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-r from-[#FB7E10] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-5 sm:px-8 md:px-10 py-3.5 sm:py-5 rounded-2xl font-black text-[15px] min-[380px]:text-base sm:text-xl uppercase tracking-wide sm:tracking-wider whitespace-nowrap shadow-2xl shadow-orange-500/30 active:scale-95 transition-all text-center border border-orange-400/30"
               >
-                <Phone size={24} className="fill-current animate-bounce" />
+                <Phone size={24} className="w-[18px] h-[18px] sm:w-6 sm:h-6 shrink-0 fill-current animate-bounce" />
                 <span>CALL NOW — 0207 101 3856</span>
               </a>
             </div>
@@ -73,9 +73,9 @@ const LandingFinalCTA = () => {
             <a
               href="#postcode-checker"
               data-conversion="availability-check"
-              className="w-full sm:w-auto sm:order-1 flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 px-8 py-4 md:py-5 rounded-2xl font-bold text-base md:text-lg uppercase tracking-wider transition-all shadow-lg active:scale-95 text-center backdrop-blur-md"
+              className="w-full sm:w-auto sm:order-1 flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 px-5 sm:px-8 py-3.5 sm:py-5 rounded-2xl font-bold text-sm min-[380px]:text-base md:text-lg uppercase tracking-wide sm:tracking-wider whitespace-nowrap transition-all shadow-lg active:scale-95 text-center backdrop-blur-md"
             >
-              <Calendar size={20} className="text-[#FB7E10]" />
+              <Calendar size={20} className="w-[17px] h-[17px] sm:w-5 sm:h-5 shrink-0 text-[#FB7E10]" />
               <span>CHECK AVAILABILITY</span>
             </a>
           </div>
