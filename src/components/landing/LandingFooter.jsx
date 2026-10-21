@@ -20,7 +20,7 @@ const OUR_SERVICES = [
 
 const QUICK_LINKS = [
   { label: 'Home', href: '#top' },
-  { label: 'Services', href: '#services' },
+  { label: 'Services', href: '#why-us' },
   { label: 'About', href: '#why-us' },
   { label: 'All Locations', href: '#areas' },
   // The coverage grid is now built around the six target towns, so the county links

@@ -228,13 +228,6 @@ const LandingHero = () => {
                 </div>
               </div>
 
-              {/* Trust Micro-Pills */}
-              <div className="mt-4 flex items-center justify-between text-[11px] font-semibold text-slate-400 px-1">
-                <span>⏱ 30–60 min dispatch</span>
-                <span>🔒 Zero upfront payment</span>
-                <span>📍 We come to you</span>
-              </div>
-
             </div>
           </div>
 

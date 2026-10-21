@@ -56,7 +56,7 @@ const ServicePageView = ({ page }) => {
         <div className="relative max-w-5xl mx-auto">
           <nav aria-label="Breadcrumb" className="text-xs font-bold text-slate-400 mb-5">
             <Link href="/" className="hover:text-white">Home</Link> <span aria-hidden="true">/</span>{' '}
-            <Link href="/#services" className="hover:text-white">Services</Link> <span aria-hidden="true">/</span>{' '}
+            <Link href="/#why-us" className="hover:text-white">Services</Link> <span aria-hidden="true">/</span>{' '}
             <span className="text-slate-200">{page.title}</span>
           </nav>
 

@@ -4,7 +4,6 @@ import LandingHero from '@/components/landing/LandingHero';
 import LandingTrustBar from '@/components/landing/LandingTrustBar';
 import LandingPostcodeChecker from '@/components/landing/LandingPostcodeChecker';
 import LandingWhyGarage from '@/components/landing/LandingWhyGarage';
-import LandingProblemSelector from '@/components/landing/LandingProblemSelector';
 import LandingHowItWorks from '@/components/landing/LandingHowItWorks';
 import LandingCoverage from '@/components/landing/LandingCoverage';
 import LandingCorridors from '@/components/landing/LandingCorridors';
@@ -110,9 +109,6 @@ export default function LandingPage() {
 
       {/* 5. "WHY DRIVE TO A GARAGE?" (Visual Comparison) */}
       <LandingWhyGarage />
-
-      {/* 6. Service Problem Selector (WHAT'S WRONG WITH YOUR TYRE?) */}
-      <LandingProblemSelector />
 
       {/* 7. How It Works (FROM STRANDED TO MOVING) */}
       <LandingHowItWorks />

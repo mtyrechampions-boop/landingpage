@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { MapPin, Phone, Navigation } from 'lucide-react';
 
-// Leaflet needs the browser, so the map is only loaded client-side.
+// Google Maps needs the browser, so the map is only loaded client-side.
 const LandingCorridorsMap = dynamic(() => import('./LandingCorridorsMap'), {
   ssr: false,
   loading: () => (
@@ -69,7 +69,7 @@ const LandingCorridors = () => {
 
           {/* Coverage map */}
           <div className="lg:sticky lg:top-28">
-            <div className="rounded-3xl md:rounded-[2.5rem] overflow-hidden bg-[#0B1528] border border-white/10 shadow-2xl p-3 sm:p-4">
+            <div className="rounded-3xl md:rounded-[2.5rem] overflow-hidden bg-white border border-gray-200 shadow-xl shadow-slate-200/60 p-3 sm:p-4">
 
               <div className="flex items-center justify-between gap-3 px-2 pt-1 pb-3">
                 <div className="flex items-center gap-2">
@@ -77,17 +77,31 @@ const LandingCorridors = () => {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FB7E10] opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FB7E10]"></span>
                   </span>
-                  <span className="text-xs font-black uppercase tracking-widest text-white">Aldershot Operating Hub</span>
+                  <span className="text-xs font-black uppercase tracking-widest text-gray-900">Aldershot Operating Hub</span>
                 </div>
-                <span className="hidden sm:inline text-[11px] font-bold uppercase tracking-wider text-slate-400">Live coverage</span>
+                <span className="hidden sm:inline text-[11px] font-bold uppercase tracking-wider text-gray-400">Live coverage</span>
               </div>
 
-              {/* `isolate` keeps Leaflet's high z-index panes beneath the fixed header and sticky bar */}
-              <div className="isolate relative w-full h-[440px] sm:h-[500px] lg:h-[560px] rounded-2xl overflow-hidden border border-white/10">
+              {/* `isolate` keeps the map's high z-index layers beneath the fixed header and sticky bar */}
+              <div className="isolate relative w-full h-[440px] sm:h-[500px] lg:h-[560px] rounded-2xl overflow-hidden border border-gray-200">
                 <LandingCorridorsMap active={active} onActiveChange={setActive} />
               </div>
 
-              <p className="mt-3 text-center text-[11px] font-semibold text-slate-500">
+              <ul className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[11px] font-bold text-gray-600" aria-label="Map key">
+                <li className="flex items-center gap-1.5">
+                  <span className="h-3 w-5 rounded-full border-2 border-[#FB7E10] bg-[#FB7E10]/10" aria-hidden="true" />
+                  Service area (about 40 miles from Aldershot)
+                </li>
+                <li className="flex items-center gap-1.5">
+                  <span className="h-3 w-3 rounded-full border-[3px] border-[#FB7E10] bg-white" aria-hidden="true" />
+                  Towns we serve
+                </li>
+                <li className="flex items-center gap-1.5">
+                  <span className="h-1 w-5 rounded-full bg-[#FB7E10]" aria-hidden="true" />
+                  Corridors
+                </li>
+              </ul>
+              <p className="mt-1.5 text-center text-[11px] font-semibold text-gray-500">
                 Indicative routes — hover or tap a corridor to trace it on the map.
               </p>
             </div>

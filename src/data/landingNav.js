@@ -5,7 +5,7 @@
 export const LANDING_NAV = [
   { label: 'Home', href: '#top' },
   { label: 'Check Availability', shortLabel: 'Availability', href: '#postcode-checker' },
-  { label: 'Services', href: '#services' },
+  { label: 'Services', href: '#why-us' },
   { label: 'How It Works', href: '#how-it-works' },
   { label: 'Areas We Cover', shortLabel: 'Areas', href: '#areas' },
   { label: 'Reviews', href: '#reviews' },
