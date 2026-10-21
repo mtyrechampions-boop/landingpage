@@ -1,23 +1,21 @@
 import React from 'react';
 import Image from 'next/image';
 
-// Mirrors the footer on the live site (mobiletyrechampions.com), but its navigation
-// links scroll to this page's own sections rather than handing visitors off to the main
-// site — same rule as the header, see `@/data/landingNav`. `SITE` is kept only for the
-// links that have no equivalent here: tyre sizes and the legal pages.
-const SITE = 'https://mobiletyrechampions.com';
+// Navigation stays on this site: section links scroll to the landing page's own sections
+// (prefixed with `homeHref` when the footer is rendered on another page), service links open
+// the internal /services pages, and tyre sizes pre-fill the booking form.
 
 const BRAND_SERVICES = [
-  { label: 'Emergency Tyre Replacement', href: '#services' },
-  { label: 'Puncture Repairs', href: '#services' },
-  { label: 'Roadside Tyre Fitting', href: '#services' },
+  { label: 'Emergency Tyre Replacement', href: '/services/flat-tyre-replacement' },
+  { label: 'Puncture Repairs', href: '/services/puncture-repair' },
+  { label: 'Roadside Tyre Fitting', href: '/services/roadside-tyre-fitting' },
 ];
 
 const OUR_SERVICES = [
-  { label: 'Emergency Tyre Fitting', href: '#services' },
-  { label: 'Wheel Balancing', href: '#services' },
-  { label: 'Locking Wheel Nut Removal', href: '#services' },
-  { label: 'Mobile Trailer Tyre Fitting', href: '#services' },
+  { label: 'Emergency Tyre Fitting', href: '/services/roadside-tyre-fitting' },
+  { label: 'Wheel Balancing', href: '/services/flat-tyre-replacement' },
+  { label: 'Locking Wheel Nut Removal', href: '/services/locking-wheel-nut-removal' },
+  { label: 'Mobile Trailer Tyre Fitting', href: '/services/commercial-tyres' },
 ];
 
 const QUICK_LINKS = [
@@ -63,7 +61,9 @@ const StarIcon = ({ className }) => (
   </svg>
 );
 
-const LandingFooter = () => {
+const LandingFooter = ({ homeHref = '' }) => {
+  const resolve = (href) => (href.startsWith('#') ? `${homeHref}${href}` : href);
+
   return (
     <footer className="bg-[#0B1528] pt-16 md:pt-24 pb-24 md:pb-12 px-6 sm:px-10 lg:px-20 border-t border-white/5 relative overflow-hidden text-center">
       {/* Orange hairline across the top edge */}
@@ -100,7 +100,7 @@ const LandingFooter = () => {
             <ul className="mt-4 flex flex-col gap-2 text-sm">
               {BRAND_SERVICES.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-gray-400 hover:text-[#FB7E10]">
+                  <a href={resolve(link.href)} className="text-gray-400 hover:text-[#FB7E10]">
                     {link.label}
                   </a>
                 </li>
@@ -162,7 +162,7 @@ const LandingFooter = () => {
             <h4 className="text-white font-bold text-lg">Our Services</h4>
             <div className="flex flex-col space-y-3.5">
               {OUR_SERVICES.map((link) => (
-                <a key={link.label} href={link.href} className={COLUMN_LINK}>
+                <a key={link.label} href={resolve(link.href)} className={COLUMN_LINK}>
                   {link.label}
                 </a>
               ))}
@@ -176,7 +176,7 @@ const LandingFooter = () => {
               {QUICK_LINKS.map((link) => (
                 <a
                   key={link.label}
-                  href={link.href}
+                  href={resolve(link.href)}
                   className="hover:text-[#FB7E10] transition-all hover:scale-105 duration-200"
                 >
                   {link.label}
@@ -230,7 +230,7 @@ const LandingFooter = () => {
             {POPULAR_TYRE_SIZES.map((size) => (
               <a
                 key={size}
-                href={`${SITE}/find-tyres?size=${size}`}
+                href={`/booking?tyre=${size}`}
                 className="text-[10px] font-bold text-gray-500 hover:text-[#FB7E10] hover:bg-white/5 border border-white/5 px-2.5 py-1.5 rounded-md transition-all duration-200 uppercase tracking-tighter"
               >
                 {size.replace('R', ' R')}
@@ -271,9 +271,9 @@ const LandingFooter = () => {
               © {new Date().getFullYear()} Mobile Tyre Champions. All rights reserved.
             </p>
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[11px] font-bold uppercase tracking-wider text-gray-500">
-              <a href={`${SITE}/privacy`} className="hover:text-[#FB7E10] transition-colors">Privacy Policy</a>
-              <a href={`${SITE}/terms`} className="hover:text-[#FB7E10] transition-colors">Terms &amp; Conditions</a>
-              <a href={`${SITE}/cookies`} className="hover:text-[#FB7E10] transition-colors">Cookie Policy</a>
+              <a href="/privacy" className="hover:text-[#FB7E10] transition-colors">Privacy Policy</a>
+              <a href="/terms" className="hover:text-[#FB7E10] transition-colors">Terms &amp; Conditions</a>
+              <a href="/cookies" className="hover:text-[#FB7E10] transition-colors">Cookie Policy</a>
             </div>
           </div>
         </div>
@@ -282,7 +282,7 @@ const LandingFooter = () => {
             the page's smooth scrolling. Inline SVG keeps this a server component. */}
         <div className="mt-10 flex justify-center">
           <a
-            href="#top"
+            href={`${homeHref}#top`}
             aria-label="Back to top of page"
             className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 hover:bg-[#FB7E10] hover:border-[#FB7E10] px-6 py-3 text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FB7E10] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1528]"
           >

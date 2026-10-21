@@ -1,7 +1,20 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { MapPin, Phone, Navigation, Radio } from 'lucide-react';
+import { locations } from '../../data/locations';
+
+// Each chip opens the availability check for that town's own postcode district. Reading and
+// Portsmouth are not listed by name in the district data, so their central districts are set here.
+const TOWN_DISTRICT_OVERRIDES = { reading: 'RG1', portsmouth: 'PO1' };
+
+const townHref = (town) => {
+  const key = town.toLowerCase();
+  const district =
+    TOWN_DISTRICT_OVERRIDES[key] ?? locations.find((l) => l.name.toLowerCase() === key)?.postcode;
+  return district ? `/availability?postcode=${encodeURIComponent(district)}` : '/availability';
+};
 
 const primaryTowns = [
   'Aldershot', 'Farnham', 'Fleet', 'Camberley', 'Guildford',
@@ -86,14 +99,14 @@ const LandingCoverage = () => {
 
           <div className="flex flex-wrap justify-center gap-2.5 sm:gap-3">
             {primaryTowns.map((town) => (
-              <a
+              <Link
                 key={town}
-                href="https://mobiletyrechampions.com/booking?postcode=GU11%203HY"
+                href={townHref(town)}
                 className="bg-white hover:bg-[#FB7E10] hover:text-white transition-all border border-gray-200 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-700 shadow-sm active:scale-95 flex items-center gap-1.5"
               >
                 <Navigation size={12} className="text-[#FB7E10]" />
                 <span>{town}</span>
-              </a>
+              </Link>
             ))}
           </div>
 

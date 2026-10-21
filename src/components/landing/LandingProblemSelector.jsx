@@ -1,7 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Phone, ArrowRight, Wrench } from 'lucide-react';
+
+// Which booking mode each problem opens the form in. The customer can still switch.
+const BOOKING_MODE = {
+  'flat-tyre': 'emergency',
+  puncture: 'scheduled',
+  blowout: 'emergency',
+  'damaged-tyre': 'emergency',
+  'locking-nut': 'scheduled',
+  'van-commercial': 'scheduled',
+};
 
 const problems = [
   {
@@ -105,14 +116,14 @@ const LandingProblemSelector = () => {
                 </div>
 
                 <div className="pt-4 border-t border-gray-100 flex items-center gap-3">
-                  <a
-                    href="https://mobiletyrechampions.com/booking?postcode=GU11%203HY"
+                  <Link
+                    href={`/booking?mode=${BOOKING_MODE[p.id] ?? 'scheduled'}`}
                     data-conversion="booking"
                     className="flex-1 bg-[#FB7E10] hover:bg-orange-600 text-white py-3 px-4 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider transition-all text-center flex items-center justify-center gap-1.5 shadow-md active:scale-95"
                   >
                     <span>{p.actionText}</span>
                     <ArrowRight size={14} />
-                  </a>
+                  </Link>
 
                   <a
                     href="tel:02071013856"

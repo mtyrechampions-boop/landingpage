@@ -9,7 +9,9 @@ import { PHONE_HREF, PHONE_DISPLAY } from '@/data/mtcNavigation';
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FB7E10] focus-visible:ring-offset-2';
 const DESKTOP_LINK = `flex items-center gap-1 rounded-lg px-2.5 xl:px-3 2xl:px-4 py-2.5 text-[15px] xl:text-[17px] font-bold whitespace-nowrap transition-colors ${FOCUS_RING}`;
 
-const LandingHeader = () => {
+// `homeHref` is '' on the landing page itself (nav links are in-page anchors) and '/' on every
+// other page, where the same anchors must point back at the landing page.
+const LandingHeader = ({ homeHref = '' }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -107,23 +109,34 @@ const LandingHeader = () => {
           <nav aria-label="Main" className="max-w-7xl 2xl:max-w-[92rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className={`flex items-center justify-between gap-3 transition-[height] duration-300 ${scrolled ? 'h-14 lg:h-[72px] xl:h-20' : 'h-16 lg:h-[84px] xl:h-24'}`}>
 
-              {/* Logo — deliberately not a link, so visitors stay on the landing page */}
+              {/* Logo — not a link on the landing page itself; elsewhere it returns there */}
               <div className="shrink-0">
-                <Image
-                  src="/images/MTC logo 2.webp"
-                  alt="Mobile Tyre Champions"
-                  width={80}
-                  height={80}
-                  className={`transition-all duration-300 ${scrolled ? 'w-10 h-10 lg:w-14 lg:h-14 xl:w-16 xl:h-16' : 'w-11 h-11 lg:w-16 lg:h-16 xl:w-20 xl:h-20'}`}
-                  priority
-                />
+                {(() => {
+                  const logo = (
+                    <Image
+                      src="/images/MTC logo 2.webp"
+                      alt="Mobile Tyre Champions"
+                      width={80}
+                      height={80}
+                      className={`transition-all duration-300 ${scrolled ? 'w-10 h-10 lg:w-14 lg:h-14 xl:w-16 xl:h-16' : 'w-11 h-11 lg:w-16 lg:h-16 xl:w-20 xl:h-20'}`}
+                      priority
+                    />
+                  );
+                  return homeHref ? (
+                    <a href={homeHref} aria-label="Mobile Tyre Champions home" className={`block rounded-lg ${FOCUS_RING}`}>
+                      {logo}
+                    </a>
+                  ) : (
+                    logo
+                  );
+                })()}
               </div>
 
               {/* Desktop navigation — in-page sections only */}
               <ul className="hidden lg:flex items-center gap-0.5 xl:gap-1 2xl:gap-2">
                 {LANDING_NAV.map((entry) => (
                   <li key={entry.href}>
-                    <a href={entry.href} className={`${DESKTOP_LINK} text-gray-700 hover:text-[#FB7E10] hover:bg-orange-50`}>
+                    <a href={`${homeHref}${entry.href}`} className={`${DESKTOP_LINK} text-gray-700 hover:text-[#FB7E10] hover:bg-orange-50`}>
                       {navLabel(entry)}
                     </a>
                   </li>
@@ -210,7 +223,7 @@ const LandingHeader = () => {
               {LANDING_NAV.map((entry) => (
                 <li key={entry.href} className="border-b border-gray-100">
                   <a
-                    href={entry.href}
+                    href={`${homeHref}${entry.href}`}
                     onClick={closeMobileForNav}
                     className={`block py-4 text-base font-bold text-gray-900 hover:text-[#FB7E10] transition-colors rounded-lg ${FOCUS_RING}`}
                   >

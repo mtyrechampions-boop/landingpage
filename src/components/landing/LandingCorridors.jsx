@@ -1,7 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { MapPin, Phone, Navigation } from 'lucide-react';
+
+// Leaflet needs the browser, so the map is only loaded client-side.
+const LandingCorridorsMap = dynamic(() => import('./LandingCorridorsMap'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center bg-[#0B1528]">
+      <div className="w-8 h-8 border-2 border-[#FB7E10] border-t-transparent rounded-full animate-spin" />
+    </div>
+  ),
+});
 
 const CORRIDORS = [
   {
@@ -30,60 +41,8 @@ const CORRIDORS = [
   },
 ];
 
-/* Transit-style schematic rather than a literal projection: every route radiates from
-   the Aldershot hub, and the compass relationships are kept true (Yateley and
-   Blackwater north-west, Camberley north-east, Guildford east, coast to the south). */
-const HUB = { x: 300, y: 310 };
-
-const NODES = [
-  { name: 'Yateley', x: 120, y: 110, corridor: 'camberley-yateley', label: 'top' },
-  { name: 'Blackwater', x: 230, y: 110, corridor: 'camberley-yateley', label: 'top', minor: true },
-  { name: 'Camberley', x: 370, y: 110, corridor: 'camberley-yateley', label: 'top' },
-  { name: 'Farnborough', x: 300, y: 180, corridor: 'farnborough-aldershot', label: 'right' },
-  { name: 'North Camp', x: 300, y: 245, corridor: 'farnborough-aldershot', label: 'right', minor: true },
-  { name: 'Aldershot', x: HUB.x, y: HUB.y, corridor: 'farnborough-aldershot', label: 'left', hub: true },
-  { name: 'Farnham', x: 430, y: 310, corridor: 'guildford-surrey', label: 'top', minor: true },
-  { name: 'Guildford', x: 565, y: 310, corridor: 'guildford-surrey', label: 'right' },
-  { name: 'Southampton', x: 155, y: 455, corridor: 'portsmouth-southampton', label: 'bottom' },
-  { name: 'Portsmouth', x: 445, y: 455, corridor: 'portsmouth-southampton', label: 'bottom' },
-];
-
-const LINES = [
-  { corridor: 'farnborough-aldershot', d: 'M 300,310 L 300,180' },
-  { corridor: 'camberley-yateley', d: 'M 300,180 L 230,110 L 120,110' },
-  { corridor: 'camberley-yateley', d: 'M 300,180 L 370,110' },
-  { corridor: 'guildford-surrey', d: 'M 300,310 L 565,310' },
-  { corridor: 'portsmouth-southampton', d: 'M 300,310 L 155,455' },
-  { corridor: 'portsmouth-southampton', d: 'M 300,310 L 445,455' },
-  { corridor: 'portsmouth-southampton', d: 'M 155,455 L 445,455' },
-];
-
-// Road shields sit beside their route, never on top of it, so nothing overlaps a stop.
-const SHIELDS = [
-  { id: 'A30', x: 175, y: 140, corridor: 'camberley-yateley' },
-  { id: 'M3 J4', x: 370, y: 150, corridor: 'camberley-yateley' },
-  { id: 'A331', x: 350, y: 215, corridor: 'farnborough-aldershot' },
-  { id: 'A31', x: 365, y: 282, corridor: 'guildford-surrey' },
-  { id: 'M3', x: 186, y: 368, corridor: 'portsmouth-southampton' },
-  { id: 'A3', x: 414, y: 368, corridor: 'portsmouth-southampton' },
-  { id: 'M27', x: 300, y: 428, corridor: 'portsmouth-southampton' },
-];
-
-const LABEL_OFFSET = {
-  top: { dx: 0, dy: -20, anchor: 'middle' },
-  right: { dx: 20, dy: 6, anchor: 'start' },
-  // Lifted slightly so the hub's two-line label clears the route heading south-west.
-  left: { dx: -24, dy: -8, anchor: 'end' },
-  bottom: { dx: 0, dy: 32, anchor: 'middle' },
-};
-
 const LandingCorridors = () => {
   const [active, setActive] = useState(null);
-
-  const state = (corridor) => {
-    if (!active) return 'rest';
-    return active === corridor ? 'live' : 'dim';
-  };
 
   return (
     <section
@@ -108,156 +67,28 @@ const LandingCorridors = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
 
-          {/* Corridor map */}
+          {/* Coverage map */}
           <div className="lg:sticky lg:top-28">
-            <div className="relative rounded-3xl md:rounded-[2.5rem] overflow-hidden bg-[#0B1528] border border-white/10 shadow-2xl p-4 sm:p-6">
-              <svg
-                viewBox="0 0 720 560"
-                className="w-full h-auto"
-                role="img"
-                aria-label="Route diagram of the mobile tyre fitting corridors radiating from the Aldershot hub to Yateley, Blackwater, Camberley, Farnborough, Farnham, Guildford, Southampton and Portsmouth."
-              >
-                <defs>
-                  <filter id="corridor-line-glow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feMerge>
-                      <feMergeNode in="blur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                </defs>
+            <div className="rounded-3xl md:rounded-[2.5rem] overflow-hidden bg-[#0B1528] border border-white/10 shadow-2xl p-3 sm:p-4">
 
-                {/* Dispatch range rings */}
-                {[130, 205, 268].map((r) => (
-                  <circle
-                    key={r}
-                    cx={HUB.x}
-                    cy={HUB.y}
-                    r={r}
-                    fill="none"
-                    stroke="rgba(148,163,184,0.14)"
-                    strokeWidth="1"
-                    strokeDasharray="3 9"
-                  />
-                ))}
+              <div className="flex items-center justify-between gap-3 px-2 pt-1 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FB7E10] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FB7E10]"></span>
+                  </span>
+                  <span className="text-xs font-black uppercase tracking-widest text-white">Aldershot Operating Hub</span>
+                </div>
+                <span className="hidden sm:inline text-[11px] font-bold uppercase tracking-wider text-slate-400">Live coverage</span>
+              </div>
 
-                {/* Routes */}
-                {LINES.map((line) => {
-                  const s = state(line.corridor);
-                  return (
-                    <path
-                      key={line.d + line.corridor}
-                      d={line.d}
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="transition-all duration-300"
-                      stroke={s === 'dim' ? '#1E293B' : '#FB7E10'}
-                      strokeOpacity={s === 'live' ? 1 : s === 'rest' ? 0.55 : 1}
-                      strokeWidth={s === 'live' ? 10 : 7}
-                      filter={s === 'live' ? 'url(#corridor-line-glow)' : undefined}
-                    />
-                  );
-                })}
+              {/* `isolate` keeps Leaflet's high z-index panes beneath the fixed header and sticky bar */}
+              <div className="isolate relative w-full h-[440px] sm:h-[500px] lg:h-[560px] rounded-2xl overflow-hidden border border-white/10">
+                <LandingCorridorsMap active={active} onActiveChange={setActive} />
+              </div>
 
-                {/* Road shields */}
-                {SHIELDS.map((shield) => {
-                  const s = state(shield.corridor);
-                  const width = shield.id.length * 9 + 18;
-                  return (
-                    <g key={shield.id} className="transition-opacity duration-300" opacity={s === 'dim' ? 0.25 : 1}>
-                      <rect
-                        x={shield.x - width / 2}
-                        y={shield.y - 12}
-                        width={width}
-                        height="24"
-                        rx="7"
-                        fill="#0B1528"
-                        stroke={s === 'live' ? '#FB7E10' : 'rgba(148,163,184,0.35)'}
-                        strokeWidth="1.5"
-                        className="transition-all duration-300"
-                      />
-                      <text
-                        x={shield.x}
-                        y={shield.y + 5}
-                        textAnchor="middle"
-                        fontSize="14"
-                        fontWeight="800"
-                        fill={s === 'live' ? '#FB7E10' : '#94A3B8'}
-                        className="transition-all duration-300"
-                      >
-                        {shield.id}
-                      </text>
-                    </g>
-                  );
-                })}
-
-                {/* Stops */}
-                {NODES.map((node) => {
-                  const s = state(node.corridor);
-                  const offset = LABEL_OFFSET[node.label];
-                  const dimmed = s === 'dim';
-                  return (
-                    <g key={node.name} className="transition-opacity duration-300" opacity={dimmed ? 0.3 : 1}>
-                      {node.hub && !dimmed && (
-                        <circle cx={node.x} cy={node.y} r="16" fill="none" stroke="#FB7E10" strokeWidth="2">
-                          <animate attributeName="r" values="16;30;16" dur="3.2s" repeatCount="indefinite" />
-                          <animate attributeName="opacity" values="0.7;0;0.7" dur="3.2s" repeatCount="indefinite" />
-                        </circle>
-                      )}
-                      <circle
-                        cx={node.x}
-                        cy={node.y}
-                        r={node.hub ? 15 : node.minor ? 7 : 10}
-                        fill={node.hub ? '#FB7E10' : '#0B1528'}
-                        stroke={dimmed ? '#334155' : node.hub ? '#FFFFFF' : '#FB7E10'}
-                        strokeWidth={node.hub ? 4 : 4}
-                        className="transition-all duration-300"
-                      />
-                      <text
-                        x={node.x + offset.dx}
-                        y={node.y + offset.dy}
-                        textAnchor={offset.anchor}
-                        fontSize={node.hub ? 21 : node.minor ? 16 : 18}
-                        fontWeight={node.hub ? 900 : 700}
-                        fill={dimmed ? '#475569' : node.hub || !node.minor ? '#FFFFFF' : '#CBD5E1'}
-                        className="transition-all duration-300"
-                      >
-                        {node.name}
-                      </text>
-                      {node.hub && (
-                        <text
-                          x={node.x + offset.dx}
-                          y={node.y + offset.dy + 19}
-                          textAnchor={offset.anchor}
-                          fontSize="12"
-                          fontWeight="800"
-                          letterSpacing="2"
-                          fill="#FB7E10"
-                          className="transition-all duration-300"
-                        >
-                          OPERATING HUB
-                        </text>
-                      )}
-                    </g>
-                  );
-                })}
-
-                <text
-                  x={HUB.x}
-                  y="520"
-                  textAnchor="middle"
-                  fontSize="12"
-                  fontWeight="800"
-                  letterSpacing="4"
-                  fill="#475569"
-                >
-                  SOUTH COAST
-                </text>
-              </svg>
-
-              <p className="mt-1 text-center text-[11px] font-semibold text-slate-500">
-                Indicative route diagram — hover a corridor to trace its routes.
+              <p className="mt-3 text-center text-[11px] font-semibold text-slate-500">
+                Indicative routes — hover or tap a corridor to trace it on the map.
               </p>
             </div>
           </div>
@@ -271,6 +102,7 @@ const LandingCorridors = () => {
                   key={corridor.id}
                   onMouseEnter={() => setActive(corridor.id)}
                   onMouseLeave={() => setActive(null)}
+                  onClick={() => setActive(isActive ? null : corridor.id)}
                   onFocus={() => setActive(corridor.id)}
                   onBlur={() => setActive(null)}
                   tabIndex={0}

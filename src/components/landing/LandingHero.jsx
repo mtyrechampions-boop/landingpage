@@ -2,16 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Phone, MessageSquare, ArrowRight, CheckCircle2, MapPin } from 'lucide-react';
-import { validateUKPostcode } from '../../api/appointmentService';
+import { Phone, MessageSquare, CheckCircle2 } from 'lucide-react';
+import PostcodeAvailabilityForm from './PostcodeAvailabilityForm';
 
 // Prefilled so the first WhatsApp message already carries what the fitter needs.
 const WHATSAPP_HREF =
   'https://wa.me/447494024653?text=Hi%20Mobile%20Tyre%20Champions%2C%20I%20need%20a%20tyre%20quote.%0AMy%20tyre%20size%3A%20%0AMy%20location%3A%20';
 
 const LandingHero = () => {
-  const [postcode, setPostcode] = useState('');
-  const [error, setError] = useState('');
   // The background video is only mounted on desktop so phones and tablets never
   // download the MP4 — they get the lighter fitter photo instead.
   const [isDesktop, setIsDesktop] = useState(false);
@@ -23,19 +21,6 @@ const LandingHero = () => {
     desktop.addEventListener('change', update);
     return () => desktop.removeEventListener('change', update);
   }, []);
-
-  const handlePostcodeSubmit = (e) => {
-    e.preventDefault();
-    if (!postcode.trim()) {
-      setError('Please enter your UK postcode');
-      return;
-    }
-    if (!validateUKPostcode(postcode)) {
-      setError('Please enter a valid UK postcode (e.g. GU11 3HY or GU11)');
-      return;
-    }
-    window.location.href = `https://mobiletyrechampions.com/booking?postcode=${encodeURIComponent(postcode.trim().toUpperCase())}`;
-  };
 
   return (
     <section id="top" className="relative bg-[#0A0A0A] text-white pt-8 pb-16 lg:pt-16 lg:pb-24 overflow-hidden border-b border-white/10">
@@ -210,38 +195,12 @@ const LandingHero = () => {
                   </p>
                 </div>
 
-                <form onSubmit={handlePostcodeSubmit} className="space-y-3">
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <MapPin className="h-5 w-5 text-[#FB7E10]" />
-                    </div>
-                    <input
-                      type="text"
-                      value={postcode}
-                      onChange={(e) => {
-                        setPostcode(e.target.value);
-                        setError('');
-                      }}
-                      placeholder="Enter Postcode (e.g. GU11 3HY)"
-                      className={`w-full pl-12 pr-4 py-4 bg-white/10 border-2 ${
-                        error ? 'border-red-500' : 'border-white/20'
-                      } rounded-2xl text-white font-bold text-base placeholder:text-slate-400 focus:border-[#FB7E10] focus:bg-white/15 focus:outline-none transition-all`}
-                    />
-                  </div>
-
-                  {error && (
-                    <p className="text-xs font-bold text-red-400 pl-1">{error}</p>
-                  )}
-
-                  <button
-                    type="submit"
-                    data-conversion="availability-check"
-                    className="w-full bg-gradient-to-r from-[#FB7E10] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white py-4 rounded-2xl font-black text-base uppercase tracking-wider shadow-xl shadow-orange-500/25 active:scale-95 transition-all flex items-center justify-center gap-2 border border-orange-400/30"
-                  >
-                    <span>Check Fitter Availability</span>
-                    <ArrowRight size={18} />
-                  </button>
-                </form>
+                <PostcodeAvailabilityForm
+                  variant="dark"
+                  source="hero"
+                  stacked
+                  buttonLabel="Check Fitter Availability"
+                />
               </div>
 
               {/* Direct Emergency Call Banner */}

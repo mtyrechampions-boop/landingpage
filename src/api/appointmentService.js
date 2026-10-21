@@ -4,7 +4,7 @@
  * Uses Google Places API for premium address lookup
  */
 
-const STRAPI_API_URL = (typeof process !== 'undefined' ? (process.env.NEXT_PUBLIC_STRAPI_API_URL || process.env.VITE_STRAPI_API_URL) : null) || 'https://enduring-morning-cf86e59201.strapiapp.com/api';
+export const STRAPI_API_URL = (typeof process !== 'undefined' ? (process.env.NEXT_PUBLIC_STRAPI_API_URL || process.env.VITE_STRAPI_API_URL) : null) || 'https://enduring-morning-cf86e59201.strapiapp.com/api';
 
 /**
  * Validation Helper Functions
@@ -90,6 +90,29 @@ export const validateCoordinates = (latitude, longitude) => {
     longitude >= -180 && longitude <= 180
   );
 };
+
+/**
+ * Builds the body Strapi's "appointments" collection expects. Only these keys are accepted by the
+ * backend, so extra booking details (date, notes, coverage check) are folded into locationNotes.
+ * Used by the /api/appointments route; submitAppointment below keeps its own copy for legacy callers.
+ *
+ * @param {Object} fields - Already validated values
+ * @returns {{ data: Object }}
+ */
+export const buildAppointmentPayload = (fields) => ({
+  data: {
+    fullName: fields.fullName.trim(),
+    phoneNumber: fields.phoneNumber.trim(),
+    serviceType: fields.serviceType.trim(),
+    tyreSize: fields.tyreSize.trim(),
+    timingSlot: fields.timingSlot.trim(),
+    postcode: fields.postcode.trim(),
+    address: fields.address.trim(),
+    vehicleReg: (fields.vehicleReg || '').trim(),
+    locationNotes: (fields.locationNotes || '').trim(),
+    email: (fields.email || '').trim()
+  }
+});
 
 /**
  * Submit Appointment to Strapi Backend
@@ -300,6 +323,7 @@ export const formatPhoneNumber = (phoneNumber) => {
 };
 
 export default {
+  buildAppointmentPayload,
   submitAppointment,
   getAppointmentStatus,
   validateUKPhoneNumber,
