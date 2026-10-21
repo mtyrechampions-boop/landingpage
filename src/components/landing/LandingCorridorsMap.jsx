@@ -36,7 +36,6 @@ const TOWNS = [
   { name: 'Yateley', lat: 51.341, lng: -0.828, corridor: 'camberley-yateley', dir: 'left' },
   { name: 'Camberley', lat: 51.335, lng: -0.743, corridor: 'camberley-yateley', dir: 'right' },
   { name: 'Farnborough', lat: 51.2905, lng: -0.754, corridor: 'farnborough-aldershot', dir: 'right', crowded: true },
-  { name: 'Farnham', lat: 51.2144, lng: -0.7983, corridor: 'guildford-surrey', dir: 'bottom', crowded: true },
   { name: 'Guildford', lat: 51.2362, lng: -0.5704, corridor: 'guildford-surrey', dir: 'right' },
   { name: 'Southampton', lat: 50.9097, lng: -1.4044, corridor: 'portsmouth-southampton', dir: 'top' },
   { name: 'Portsmouth', lat: 50.8198, lng: -1.088, corridor: 'portsmouth-southampton', dir: 'bottom' },
@@ -49,7 +48,7 @@ const ROUTES = [
   { corridor: 'farnborough-aldershot', stops: ['Aldershot', 'Farnborough'] },
   { corridor: 'camberley-yateley', stops: ['Farnborough', 'Camberley'] },
   { corridor: 'camberley-yateley', stops: ['Farnborough', 'Yateley'] },
-  { corridor: 'guildford-surrey', stops: ['Aldershot', 'Farnham', 'Guildford'] },
+  { corridor: 'guildford-surrey', stops: ['Aldershot', 'Guildford'] },
   { corridor: 'portsmouth-southampton', stops: ['Aldershot', 'Southampton'] },
   { corridor: 'portsmouth-southampton', stops: ['Aldershot', 'Portsmouth'] },
   { corridor: 'portsmouth-southampton', stops: ['Southampton', 'Portsmouth'] },
@@ -61,7 +60,7 @@ const SHIELDS = [
   { id: 'A30', lat: 51.346, lng: -0.79, corridor: 'camberley-yateley', minZoom: 11 },
   { id: 'M3 J4', lat: 51.315, lng: -0.742, corridor: 'camberley-yateley', minZoom: 11 },
   { id: 'A331', lat: 51.268, lng: -0.764, corridor: 'farnborough-aldershot', minZoom: 11 },
-  { id: 'A31', lat: 51.225, lng: -0.684, corridor: 'guildford-surrey', minZoom: 0 },
+  { id: 'A31', lat: 51.2437, lng: -0.684, corridor: 'guildford-surrey', minZoom: 0 },
   { id: 'M3', lat: 51.08, lng: -1.09, corridor: 'portsmouth-southampton', minZoom: 0 },
   { id: 'A3', lat: 51.03, lng: -0.925, corridor: 'portsmouth-southampton', minZoom: 0 },
   { id: 'M27', lat: 50.849, lng: -1.19, corridor: 'portsmouth-southampton', minZoom: 0 },
@@ -354,7 +353,7 @@ const LandingCorridorsMap = ({ active, onActiveChange }) => {
       <div
         ref={containerRef}
         role="region"
-        aria-label="Map of the mobile tyre fitting corridors radiating from the Aldershot hub to Yateley, Camberley, Farnborough, Farnham, Guildford, Southampton and Portsmouth."
+        aria-label="Map of the mobile tyre fitting corridors radiating from the Aldershot hub to Yateley, Camberley, Farnborough, Guildford, Southampton and Portsmouth."
         className="w-full h-full"
       />
 
