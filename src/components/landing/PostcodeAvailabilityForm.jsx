@@ -104,9 +104,8 @@ const PostcodeAvailabilityForm = ({
             aria-invalid={Boolean(error)}
             aria-describedby={error ? errorId : undefined}
             disabled={submitting}
-            className={`w-full pl-12 pr-4 ${compact ? 'h-12 py-0' : 'py-4'} border-2 ${compact ? 'rounded-xl' : 'rounded-2xl'} font-bold text-base focus:outline-none transition-all disabled:opacity-70 ${styles.input} ${
-              error ? styles.inputError : ''
-            }`}
+            className={`w-full pl-12 pr-4 ${compact ? 'h-12 py-0' : 'py-4'} border-2 ${compact ? 'rounded-xl' : 'rounded-2xl'} font-bold text-base focus:outline-none transition-all disabled:opacity-70 ${styles.input} ${error ? styles.inputError : ''
+              }`}
           />
         </div>
 
