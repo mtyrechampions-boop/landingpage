@@ -22,7 +22,7 @@ const LandingPostcodeChecker = () => {
   };
 
   return (
-    <section id="postcode-checker" className="bg-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-gray-100">
+    <section id="postcode-checker" className="scroll-mt-20 lg:scroll-mt-24 bg-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-gray-100">
       <div className="max-w-3xl mx-auto text-center">
         
         <div className="inline-flex items-center gap-2 bg-[#FB7E10]/10 border border-[#FB7E10]/20 text-[#FB7E10] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4">

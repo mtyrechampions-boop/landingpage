@@ -7,7 +7,7 @@ import { SERVICE_AREAS_TEXT } from '@/lib/siteText';
 
 const LandingFinalCTA = () => {
   return (
-    <section className="bg-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <section id="contact" className="scroll-mt-20 lg:scroll-mt-24 bg-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Radiant ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#FB7E10]/15 rounded-full blur-[150px] pointer-events-none" />
 

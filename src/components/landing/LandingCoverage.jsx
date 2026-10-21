@@ -19,7 +19,7 @@ const counties = [
 
 const LandingCoverage = () => {
   return (
-    <section className="bg-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-gray-100">
+    <section id="areas" className="scroll-mt-20 lg:scroll-mt-24 bg-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-gray-100">
       <div className="max-w-7xl mx-auto">
         
         {/* Header */}
@@ -41,7 +41,8 @@ const LandingCoverage = () => {
           {counties.map((c, i) => (
             <div
               key={i}
-              className="bg-gray-50 hover:bg-white border border-gray-200 hover:border-[#FB7E10]/30 rounded-3xl p-6 transition-all duration-300 space-y-4 shadow-sm hover:shadow-lg group"
+              id={`areas-${c.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`}
+              className="scroll-mt-28 lg:scroll-mt-32 bg-gray-50 hover:bg-white border border-gray-200 hover:border-[#FB7E10]/30 rounded-3xl p-6 transition-all duration-300 space-y-4 shadow-sm hover:shadow-lg group"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-[#FB7E10] font-black text-lg">

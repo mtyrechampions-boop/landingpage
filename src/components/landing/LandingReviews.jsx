@@ -62,7 +62,7 @@ const reviews = [
 
 const LandingReviews = () => {
   return (
-    <section className="bg-gray-50 py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-gray-100">
+    <section id="reviews" className="scroll-mt-20 lg:scroll-mt-24 bg-gray-50 py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-gray-100">
       <div className="max-w-7xl mx-auto">
         
         {/* Header */}

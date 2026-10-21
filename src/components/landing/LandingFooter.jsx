@@ -1,34 +1,36 @@
 import React from 'react';
 import Image from 'next/image';
 
-// Mirrors the footer on the live site (mobiletyrechampions.com). Every link points at
-// the LIVE page — those pages are not part of this project and must not be recreated
-// here, so all hrefs are absolute, same convention as `@/data/mtcNavigation`.
+// Mirrors the footer on the live site (mobiletyrechampions.com), but its navigation
+// links scroll to this page's own sections rather than handing visitors off to the main
+// site — same rule as the header, see `@/data/landingNav`. `SITE` is kept only for the
+// links that have no equivalent here: tyre sizes and the legal pages.
 const SITE = 'https://mobiletyrechampions.com';
 
 const BRAND_SERVICES = [
-  { label: 'Emergency Tyre Replacement', href: `${SITE}/services/emergency-tyre-fitting` },
-  { label: 'Puncture Repairs', href: `${SITE}/services/puncture-repair` },
-  { label: 'Roadside Tyre Fitting', href: `${SITE}/services/mobile-tyre-fitting` },
+  { label: 'Emergency Tyre Replacement', href: '#services' },
+  { label: 'Puncture Repairs', href: '#services' },
+  { label: 'Roadside Tyre Fitting', href: '#services' },
 ];
 
 const OUR_SERVICES = [
-  { label: 'Emergency Tyre Fitting', href: `${SITE}/services/emergency-tyre-fitting` },
-  { label: 'Wheel Balancing', href: `${SITE}/services/precision-wheel-balancing` },
-  { label: 'Locking Wheel Nut Removal', href: `${SITE}/services/locking-wheel-nut-removal` },
-  { label: 'Mobile Trailer Tyre Fitting', href: `${SITE}/services/trailer-tyre-fitting` },
+  { label: 'Emergency Tyre Fitting', href: '#services' },
+  { label: 'Wheel Balancing', href: '#services' },
+  { label: 'Locking Wheel Nut Removal', href: '#services' },
+  { label: 'Mobile Trailer Tyre Fitting', href: '#services' },
 ];
 
 const QUICK_LINKS = [
-  { label: 'Home', href: `${SITE}/` },
-  { label: 'Services', href: `${SITE}/services` },
-  { label: 'About', href: `${SITE}/about` },
-  { label: 'All Locations', href: `${SITE}/locations` },
-  { label: 'Hampshire', href: `${SITE}/locations/hampshire` },
-  { label: 'Berkshire', href: `${SITE}/locations/berkshire` },
-  { label: 'Surrey', href: `${SITE}/locations/surrey` },
-  { label: 'Reading', href: `${SITE}/locations/reading` },
-  { label: 'Contact', href: `${SITE}/contact` },
+  { label: 'Home', href: '#top' },
+  { label: 'Services', href: '#services' },
+  { label: 'About', href: '#why-us' },
+  { label: 'All Locations', href: '#areas' },
+  { label: 'Hampshire', href: '#areas-hampshire' },
+  { label: 'Berkshire', href: '#areas-berkshire' },
+  { label: 'Surrey', href: '#areas-surrey' },
+  // Reading is a Berkshire town — the coverage grid lists it on the Berkshire card.
+  { label: 'Reading', href: '#areas-berkshire' },
+  { label: 'Contact', href: '#contact' },
 ];
 
 const POPULAR_TYRE_SIZES = [
@@ -70,7 +72,8 @@ const LandingFooter = () => {
 
           {/* Brand column */}
           <div className="space-y-6 flex flex-col items-center">
-            <a href={`${SITE}/`} className="flex items-center h-16 md:h-20">
+            {/* Logo — deliberately not a link, so visitors stay on the landing page */}
+            <div className="flex items-center h-16 md:h-20">
               <div className="relative h-full w-48">
                 <Image
                   src="/images/MTC logo 3.webp"
@@ -80,7 +83,7 @@ const LandingFooter = () => {
                   className="object-contain"
                 />
               </div>
-            </a>
+            </div>
 
             <p className="text-gray-400 text-sm font-medium leading-relaxed max-w-xs mx-auto">
               Mobile Tyre Champions — Headquarters in Aldershot, serving Surrey, Hampshire, Berkshire and West London.
