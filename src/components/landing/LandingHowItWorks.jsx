@@ -1,118 +1,110 @@
 'use client';
 
 import React from 'react';
-import { Phone, MapPin, Wrench, CheckCircle } from 'lucide-react';
+import { Phone, Clock, Wrench } from 'lucide-react';
 
 const steps = [
   {
     step: '01',
-    title: 'TELL US WHERE YOU ARE',
-    desc: 'Call 0207 101 3856 or enter your postcode. Tell us your location and tyre size.',
-    icon: <Phone className="w-6 h-6 text-[#FB7E10]" />
+    title: 'Call or Send Your Location',
+    desc: 'Tell us your tyre size or vehicle registration, plus your postcode, road name or live location. Not sure of the tyre size? We can help you identify it.',
+    icon: Phone,
   },
   {
     step: '02',
-    title: 'WE DISPATCH A MOBILE VAN',
-    desc: 'A certified mobile technician with a fully equipped tyre workshop heads directly to you.',
-    icon: <MapPin className="w-6 h-6 text-[#FB7E10]" />
+    title: 'Get Your Price & Arrival Window',
+    desc: "We'll confirm the available tyre options, provide a fixed quote for the agreed work and give you an estimated arrival time. No upfront deposit required.",
+    icon: Clock,
   },
   {
     step: '03',
-    title: 'WE FIT & BALANCE YOUR TYRE',
-    desc: 'Professional on-site tyre fitting, electronic digital balancing, and new valve installation.',
-    icon: <Wrench className="w-6 h-6 text-[#FB7E10]" />
+    title: 'We Fit. Balance. Check. You Pay.',
+    desc: 'Our technician fits the tyre, balances the wheel where required and torque-checks the wheel fixings. You pay once the agreed fitting work has been completed and inspected.',
+    icon: Wrench,
   },
-  {
-    step: '04',
-    title: 'BACK ON THE ROAD',
-    desc: 'Pay safely after fitting is completed to your satisfaction. Drive away with zero hassle.',
-    icon: <CheckCircle className="w-6 h-6 text-[#FB7E10]" />
-  }
 ];
 
 const LandingHowItWorks = () => {
   return (
-    <section id="how-it-works" className="scroll-mt-20 lg:scroll-mt-24 bg-gray-50 py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-gray-100">
-      <div className="max-w-5xl mx-auto">
-        
+    <section
+      id="how-it-works"
+      className="scroll-mt-20 lg:scroll-mt-24 relative overflow-hidden bg-[#0B1528] py-16 md:py-24 px-4 sm:px-6 lg:px-8"
+    >
+      {/* Ambient brand glow */}
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#FB7E10]/10 rounded-full blur-[140px] pointer-events-none" />
+
+      <div className="relative max-w-6xl mx-auto">
+
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 md:mb-20">
-          <div className="inline-flex items-center gap-2 bg-[#FB7E10]/10 border border-[#FB7E10]/20 text-[#FB7E10] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-3">
-            <span>Fast 4-Step Emergency Process</span>
+        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+          <div className="inline-flex items-center gap-2 bg-[#FB7E10]/15 border border-[#FB7E10]/30 text-[#FB7E10] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4">
+            <span className="w-2 h-2 rounded-full bg-[#FB7E10] animate-ping" />
+            <span>Three-Step Zero-Friction Process</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-gray-900 leading-tight">
-            FROM STRANDED TO MOVING.
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-[1.1]">
+            Tell Us Where You Are.{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FB7E10] to-orange-400">
+              We'll Handle the Tyre.
+            </span>
           </h2>
-          <p className="mt-3 text-gray-500 text-base sm:text-lg">
+          <p className="mt-4 text-slate-400 text-base sm:text-lg">
             How our 24/7 rapid roadside and mobile tyre dispatch works:
           </p>
         </div>
 
-        {/* Vertical Stepper */}
+        {/* Process rail */}
         <div className="relative">
-          {/* Vertical Connecting Line on Desktop */}
-          <div className="hidden md:block absolute top-8 bottom-8 left-1/2 w-0.5 -translate-x-1/2 bg-gradient-to-b from-[#FB7E10] via-[#FB7E10]/30 to-gray-200" />
+          {/* Connector runs behind the cards and shows through the gaps, level with the step numbers */}
+          <div
+            aria-hidden="true"
+            className="hidden lg:block absolute left-10 right-10 top-14 border-t-2 border-dashed border-white/15"
+          />
 
-          <div className="space-y-8 md:space-y-12">
-            {steps.map((s, idx) => {
-              const isEven = idx % 2 === 1;
-              return (
-                <div
-                  key={idx}
-                  className={`flex flex-col md:flex-row items-center gap-6 md:gap-12 ${
-                    isEven ? 'md:flex-row-reverse text-center md:text-left' : 'text-center md:text-left'
-                  }`}
-                >
-                  {/* Step Card */}
-                  <div className="w-full md:w-[45%] bg-white hover:shadow-lg border border-gray-200 hover:border-[#FB7E10]/30 rounded-3xl p-6 sm:p-8 shadow-sm transition-all duration-300">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-3xl font-black text-[#FB7E10] tracking-tighter">
-                        {s.step}
-                      </span>
-                      <div className="p-2.5 rounded-2xl bg-[#FB7E10]/10 border border-[#FB7E10]/20">
-                        {s.icon}
-                      </div>
-                    </div>
-                    
-                    <h3 className="text-xl sm:text-2xl font-black text-gray-900 mb-2 tracking-tight">
-                      {s.title}
-                    </h3>
-                    
-                    <p className="text-sm text-gray-500 leading-relaxed font-normal">
-                      {s.desc}
-                    </p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6">
+            {steps.map(({ step, title, desc, icon: Icon }) => (
+              <div
+                key={step}
+                className="relative z-10 h-full bg-[#101C33] border border-white/10 hover:border-[#FB7E10]/40 rounded-3xl p-7 sm:p-8 transition-colors duration-300 group"
+              >
+                <div className="flex items-start justify-between gap-4 mb-6">
+                  <span className="text-5xl font-black text-[#FB7E10] tracking-tighter leading-none">
+                    {step}
+                  </span>
+                  <div className="p-3 rounded-2xl bg-[#FB7E10]/10 border border-[#FB7E10]/25 group-hover:bg-[#FB7E10] transition-colors duration-300">
+                    <Icon className="w-6 h-6 text-[#FB7E10] group-hover:text-white transition-colors duration-300" />
                   </div>
-
-                  {/* Center Node Indicator */}
-                  <div className="hidden md:flex w-12 h-12 rounded-full bg-white border-2 border-[#FB7E10] items-center justify-center text-[#FB7E10] font-black text-sm shadow-lg z-10 shrink-0">
-                    {idx + 1}
-                  </div>
-
-                  {/* Empty Spacer */}
-                  <div className="hidden md:block w-[45%]" />
                 </div>
-              );
-            })}
+
+                <h3 className="text-xl sm:text-2xl font-black text-white mb-3 tracking-tight leading-snug">
+                  {title}
+                </h3>
+
+                <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
+                  {desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Bottom Fast Action Banner */}
-        <div className="mt-14 p-6 sm:p-8 bg-white border-2 border-gray-200 rounded-3xl text-center space-y-4 shadow-lg">
-          <h3 className="text-xl sm:text-2xl font-black text-gray-900">
-            Need urgent assistance right this second?
+        {/* Bottom action banner */}
+        <div className="mt-12 lg:mt-16 rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-6 sm:p-8 text-center">
+          <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+            Get Your Tyre Sorted Today
           </h3>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+          <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <a
               href="tel:02071013856"
               data-conversion="phone-call"
-              className="w-full sm:w-auto sm:order-2 bg-[#FB7E10] hover:bg-orange-600 text-white px-8 py-4 rounded-2xl font-black text-base uppercase tracking-wider shadow-lg active:scale-95 transition-all"
+              className="w-full sm:w-auto sm:order-2 flex items-center justify-center gap-2 bg-[#FB7E10] hover:bg-orange-600 text-white px-8 py-4 rounded-2xl font-black text-sm min-[380px]:text-base uppercase tracking-wide whitespace-nowrap shadow-xl shadow-orange-500/20 active:scale-95 transition-all"
             >
-              CALL 0207 101 3856 NOW
+              <Phone size={18} className="fill-current shrink-0" />
+              <span>Call 0207 101 3856</span>
             </a>
             <a
               href="#postcode-checker"
               data-conversion="availability-check"
-              className="w-full sm:w-auto sm:order-1 bg-gray-100 hover:bg-gray-200 text-gray-800 border border-gray-200 px-8 py-4 rounded-2xl font-bold text-base uppercase tracking-wider transition-all active:scale-95"
+              className="w-full sm:w-auto sm:order-1 flex items-center justify-center bg-white/10 hover:bg-white/15 text-white border border-white/20 px-8 py-4 rounded-2xl font-bold text-sm min-[380px]:text-base uppercase tracking-wide whitespace-nowrap transition-all active:scale-95 backdrop-blur-md"
             >
               Check Availability
             </a>

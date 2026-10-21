@@ -25,11 +25,13 @@ const QUICK_LINKS = [
   { label: 'Services', href: '#services' },
   { label: 'About', href: '#why-us' },
   { label: 'All Locations', href: '#areas' },
-  { label: 'Hampshire', href: '#areas-hampshire' },
-  { label: 'Berkshire', href: '#areas-berkshire' },
-  { label: 'Surrey', href: '#areas-surrey' },
-  // Reading is a Berkshire town — the coverage grid lists it on the Berkshire card.
-  { label: 'Reading', href: '#areas-berkshire' },
+  // The coverage grid is now built around the six target towns, so the county links
+  // land on the section itself rather than a card that no longer exists.
+  { label: 'Camberley', href: '#areas-camberley' },
+  { label: 'Farnborough', href: '#areas-farnborough' },
+  { label: 'Guildford', href: '#areas-guildford' },
+  { label: 'Portsmouth', href: '#areas-portsmouth' },
+  { label: 'Southampton', href: '#areas-southampton' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -274,6 +276,30 @@ const LandingFooter = () => {
               <a href={`${SITE}/cookies`} className="hover:text-[#FB7E10] transition-colors">Cookie Policy</a>
             </div>
           </div>
+        </div>
+
+        {/* Back to top — a plain anchor, so it works without JavaScript and inherits
+            the page's smooth scrolling. Inline SVG keeps this a server component. */}
+        <div className="mt-10 flex justify-center">
+          <a
+            href="#top"
+            aria-label="Back to top of page"
+            className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 hover:bg-[#FB7E10] hover:border-[#FB7E10] px-6 py-3 text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FB7E10] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1528]"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-y-0.5"
+              aria-hidden="true"
+            >
+              <path d="M18 15l-6-6-6 6" />
+            </svg>
+            <span>Back to top</span>
+          </a>
         </div>
 
       </div>

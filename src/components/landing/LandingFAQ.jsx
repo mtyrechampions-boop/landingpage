@@ -2,32 +2,47 @@
 
 import React, { useState } from 'react';
 import { HelpCircle, ChevronDown, Phone, MessageSquare } from 'lucide-react';
-import { RESPONSE_PROMISE } from '@/lib/siteText';
 
 const faqs = [
   {
-    q: "How quickly can a mobile tyre van reach me?",
-    a: RESPONSE_PROMISE || "Our mobile tyre fitting vans typically arrive within 30–60 minutes depending on your location and traffic across Surrey, Hampshire, and Berkshire."
+    q: "How quickly can you get to me?",
+    a: "Our typical estimated arrival time is 30–60 minutes. This depends on your exact location, traffic conditions and the nearest available fitting van. We'll give you a realistic arrival estimate when we confirm your dispatch, rather than promise a time we can't meet."
   },
   {
-    q: "Do you offer emergency roadside and motorway callouts?",
-    a: "Yes, 100%. Our vans and technicians are fully certified and equipped with high-visibility lighting, heavy-duty jacks, and motorway-safe gear for hard shoulders, laybys, dual carriageways, and driveways."
+    q: "Can you change my tyre on the motorway?",
+    a: "We can assist with tyre emergencies on major routes including the M3, A3 and M27, provided the vehicle is in a location where work can be carried out safely and legally. If you're stopped on a live motorway lane or in an unsafe position, do not attempt to change the tyre. Follow National Highways safety guidance and contact emergency services where necessary. We'll discuss a safe fitting location with you."
   },
   {
-    q: "Do I have to pay upfront or pay a deposit?",
-    a: "No deposit or upfront payment required. We quote your price clearly upfront with no hidden callout charges, and you pay only after the tyre has been fitted and balanced to your satisfaction."
+    q: "Do I have to pay before you arrive?",
+    a: "No. We don't require an upfront payment for the agreed fitting service. You'll receive a quote before work begins and pay once the tyre has been fitted and inspected."
   },
   {
-    q: "Are you genuinely open 24 hours a day, 7 days a week?",
-    a: "Yes. We operate 24 hours a day, 365 days a year. Whether you blow a tyre at 2:00 AM on Sunday, during bank holidays, or during peak rush hour, our mobile fitting team is always available."
+    q: "How much does emergency mobile tyre fitting cost?",
+    a: "The price depends on the tyre size, brand, fitting requirements and your location. We'll explain the total quoted price before you agree to the job, so you know what you're paying for."
   },
   {
-    q: "What tyre brands and sizes do you carry on the vans?",
-    a: "We carry all major vehicle tyre sizes across premium brands (Michelin, Continental, Pirelli, Goodyear, Bridgestone) as well as mid-range and budget options for cars, 4x4s, SUVs, and commercial vans."
+    q: "What if I don't know my tyre size?",
+    a: "That's fine. You can provide your vehicle registration and we'll help identify the correct tyre specification. We may ask you to confirm the size printed on the tyre sidewall before fitting."
   },
   {
-    q: "Can you help if I lost or rounded my locking wheel nut key?",
-    a: "Yes. Our technicians carry specialist inverse-fluted extraction tools to safely remove overtightened, damaged, or lost locking wheel nuts without causing any damage to your alloy rims."
+    q: "Do you stock Michelin, Bridgestone, Continental and Goodyear?",
+    a: "We can source major tyre brands including Michelin, Bridgestone, Continental and Goodyear, alongside more affordable budget options. Stock and fitting availability depend on the exact tyre specification. Contact us with your tyre size and we'll check the options."
+  },
+  {
+    q: "Can you get unusual or low-profile tyre sizes?",
+    a: "Tell us your exact tyre size and preferred brand. We'll check stock and advise on the earliest available fitting option. We won't confirm availability until we've checked it."
+  },
+  {
+    q: "I've lost my locking wheel nut key. Can you still remove the wheel?",
+    a: "Yes, we offer specialist locking wheel nut removal. Tell us that your key is missing when you call so we can check the equipment and access requirements for your vehicle."
+  },
+  {
+    q: "Can you repair a puncture instead of replacing the tyre?",
+    a: "Where the tyre is safe and suitable for repair, we'll assess whether a puncture repair is possible. Damage to the sidewall, certain tread areas or a tyre driven on while flat may mean replacement is necessary."
+  },
+  {
+    q: "Can you fit tyres while I'm at work?",
+    a: "Yes. We offer scheduled mobile tyre fitting at homes and workplaces across our service area, subject to safe access and appointment availability. You can carry on with your day while the work is completed."
   }
 ];
 
@@ -85,14 +100,18 @@ const LandingFAQ = () => {
                   </div>
                 </button>
 
+                {/* Grid-rows transition rather than a max-height: answers vary in length
+                    and a fixed cap clips the longer ones. */}
                 <div
-                  className={`transition-all duration-300 ease-in-out px-5 sm:px-6 overflow-hidden ${
-                    isOpen ? 'max-h-60 pb-6 opacity-100' : 'max-h-0 opacity-0'
+                  className={`grid transition-all duration-300 ease-in-out px-5 sm:px-6 ${
+                    isOpen ? 'grid-rows-[1fr] pb-6 opacity-100' : 'grid-rows-[0fr] opacity-0'
                   }`}
                 >
-                  <p className="text-gray-500 font-normal leading-relaxed text-sm sm:text-base pt-3 border-t border-gray-100">
-                    {faq.a}
-                  </p>
+                  <div className="overflow-hidden">
+                    <p className="text-gray-500 font-normal leading-relaxed text-sm sm:text-base pt-3 border-t border-gray-100">
+                      {faq.a}
+                    </p>
+                  </div>
                 </div>
               </div>
             );

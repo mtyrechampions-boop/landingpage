@@ -7,21 +7,26 @@ import LandingWhyGarage from '@/components/landing/LandingWhyGarage';
 import LandingProblemSelector from '@/components/landing/LandingProblemSelector';
 import LandingHowItWorks from '@/components/landing/LandingHowItWorks';
 import LandingCoverage from '@/components/landing/LandingCoverage';
+import LandingCorridors from '@/components/landing/LandingCorridors';
 import LandingReviews from '@/components/landing/LandingReviews';
+import LandingQuoteForm from '@/components/landing/LandingQuoteForm';
 import LandingFAQ from '@/components/landing/LandingFAQ';
 import LandingFinalCTA from '@/components/landing/LandingFinalCTA';
 import LandingFooter from '@/components/landing/LandingFooter';
 import LandingMobileStickyBar from '@/components/landing/LandingMobileStickyBar';
 import LandingWhatsAppFloat from '@/components/landing/LandingWhatsAppFloat';
-import { SERVICE_AREAS_TEXT } from '@/lib/siteText';
+
+// The page is served at /landing and /landing-page too, but LANDING_URL is the SEO
+// target from the content brief and the canonical all three versions point at.
+const LANDING_URL = 'https://mobiletyrechampions.com/emergency-mobile-tyre-fitting-surrey-hampshire/';
 
 export const metadata = {
-  title: '24/7 Mobile Tyre Fitting | Mobile Tyre Champions',
-  description: `24/7 emergency mobile tyre fitting at home, work or roadside across Surrey, Hampshire, Berkshire and surrounding areas. Typical arrival in 30–60 minutes. Call 0207 101 3856.`,
+  title: '24/7 Mobile Tyre Fitting Surrey & Hampshire | Tyre Champions',
+  description: `Flat tyre in Camberley, Farnborough, Guildford, Portsmouth or Southampton? 24/7 mobile tyre fitting, typical 30–60 min arrival. Call 0207 101 3856.`,
   openGraph: {
-    title: '24/7 Mobile Tyre Fitting — We Come To You | Mobile Tyre Champions',
-    description: `Emergency 24/7 mobile tyre fitting and roadside tyre assistance across Surrey, Hampshire, Berkshire. Typical arrival in 30–60 minutes.`,
-    url: 'https://mobiletyrechampions.com/landing',
+    title: '24/7 Mobile Tyre Fitting Surrey & Hampshire | Tyre Champions',
+    description: `Flat tyre in Camberley, Farnborough, Guildford, Portsmouth or Southampton? 24/7 mobile tyre fitting, typical 30–60 min arrival. Call 0207 101 3856.`,
+    url: LANDING_URL,
     siteName: 'Mobile Tyre Champions',
     images: [
       {
@@ -35,16 +40,16 @@ export const metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://mobiletyrechampions.com/landing'
+    canonical: LANDING_URL
   }
 };
 
 const landingSchema = {
   "@context": "https://schema.org",
   "@type": "AutoRepair",
-  "@id": "https://mobiletyrechampions.com/landing#business",
+  "@id": `${LANDING_URL}#business`,
   name: "Mobile Tyre Champions",
-  url: "https://mobiletyrechampions.com/landing",
+  url: LANDING_URL,
   logo: "https://mobiletyrechampions.com/images/MTC%20logo%202.webp",
   image: "https://mobiletyrechampions.com/images/mobile-tyre-champions-van1.webp",
   telephone: "+44-207-101-3856",
@@ -73,7 +78,11 @@ const landingSchema = {
     { "@type": "Place", name: "Guildford" },
     { "@type": "Place", name: "Camberley" },
     { "@type": "Place", name: "Woking" },
-    { "@type": "Place", name: "Basingstoke" }
+    { "@type": "Place", name: "Basingstoke" },
+    { "@type": "Place", name: "Farnborough" },
+    { "@type": "Place", name: "Yateley" },
+    { "@type": "Place", name: "Portsmouth" },
+    { "@type": "Place", name: "Southampton" }
   ],
   priceRange: "££"
 };
@@ -111,8 +120,14 @@ export default function LandingPage() {
       {/* 8. Service Areas (MOBILE TYRE FITTING IN YOUR AREA) */}
       <LandingCoverage />
 
+      {/* 8b. Local Corridor Coverage (town-level detail + coverage map) */}
+      <LandingCorridors />
+
       {/* 9. Social Proof (Verified Customer Testimonials) */}
       <LandingReviews />
+
+      {/* 9b. Callback Request Form (name, number, location, tyre, service) */}
+      <LandingQuoteForm />
 
       {/* 10. FAQ (Accessible Compact Accordions) */}
       <LandingFAQ />

@@ -1,9 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Phone, Calendar, ArrowRight, Clock, ShieldCheck, CheckCircle2, MapPin, Zap, AlertTriangle, Radio } from 'lucide-react';
+import { Phone, MessageSquare, ArrowRight, CheckCircle2, MapPin } from 'lucide-react';
 import { validateUKPostcode } from '../../api/appointmentService';
-import { SERVICE_AREAS_TEXT } from '@/lib/siteText';
+
+// Prefilled so the first WhatsApp message already carries what the fitter needs.
+const WHATSAPP_HREF =
+  'https://wa.me/447494024653?text=Hi%20Mobile%20Tyre%20Champions%2C%20I%20need%20a%20tyre%20quote.%0AMy%20tyre%20size%3A%20%0AMy%20location%3A%20';
 
 const LandingHero = () => {
   const [postcode, setPostcode] = useState('');
@@ -65,14 +68,65 @@ const LandingHero = () => {
             <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black tracking-tight text-white leading-[1.05]">
               FLAT TYRE?<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FB7E10] via-orange-400 to-amber-400">
-                WE'LL COME TO YOU.
+                WE'LL COME TO YOU. FAST.
               </span>
             </h1>
 
-            {/* Supporting Copy */}
-            <p className="text-base sm:text-lg md:text-xl text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              Fast mobile tyre fitting at home, work or roadside. Typical arrival in <strong className="text-white font-bold">30–60 minutes</strong> across Surrey, Hampshire & Berkshire. All tyre sizes in stock.
+            {/* Subheadline */}
+            <p className="text-lg sm:text-xl md:text-2xl font-black text-white tracking-tight">
+              Emergency Mobile Tyre Fitting in 30–60 Minutes
             </p>
+
+            {/* Supporting Copy */}
+            <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              Stranded in Camberley, Farnborough, Yateley, Guildford, Portsmouth or Southampton? Our Aldershot-based mobile tyre service dispatches equipped fitting vans directly to your location, whether you're roadside, at home or at work.
+            </p>
+
+            <p className="text-sm sm:text-base text-slate-400 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              <strong className="text-white font-bold">Typical arrival: 30–60 minutes</strong>, depending on your location, van availability and live traffic conditions. We'll confirm your estimated arrival time when your job is dispatched.
+            </p>
+
+            {/* The three objections, answered up front */}
+            <p className="text-sm sm:text-base font-black text-[#FB7E10] leading-relaxed">
+              No garage queues. No unnecessary recovery truck wait. No upfront payment.
+            </p>
+
+            {/* Action Buttons */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1 max-w-2xl mx-auto lg:mx-0">
+              {/* Primary Call CTA */}
+              <div className="sm:order-2 space-y-2">
+                <div className="animate-zoom-pulse">
+                  <a
+                    href="tel:02071013856"
+                    data-conversion="phone-call"
+                    className="w-full flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-r from-[#FB7E10] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-3.5 sm:py-4 rounded-2xl font-black text-[15px] min-[380px]:text-base lg:text-lg uppercase tracking-wide whitespace-nowrap shadow-2xl shadow-orange-500/30 active:scale-95 transition-all text-center border border-orange-400/30"
+                  >
+                    <Phone size={24} className="w-[18px] h-[18px] sm:w-5 sm:h-5 shrink-0 fill-current animate-bounce" />
+                    <span>CALL NOW 24/7</span>
+                  </a>
+                </div>
+                <p className="text-xs sm:text-[13px] text-slate-400 font-medium">
+                  <span className="text-white font-black">0207 101 3856</span> — emergency roadside assistance
+                </p>
+              </div>
+
+              {/* Secondary WhatsApp CTA */}
+              <div className="sm:order-1 space-y-2">
+                <a
+                  href={WHATSAPP_HREF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-conversion="whatsapp"
+                  className="w-full flex items-center justify-center gap-2 bg-[#22C55E] hover:bg-green-600 text-white px-4 py-3.5 sm:py-4 rounded-2xl font-black text-[15px] min-[380px]:text-base lg:text-lg uppercase tracking-wide whitespace-nowrap shadow-2xl shadow-green-500/25 active:scale-95 transition-all text-center border border-green-400/30"
+                >
+                  <MessageSquare size={20} className="w-[17px] h-[17px] sm:w-5 sm:h-5 shrink-0" />
+                  <span>WhatsApp Quote</span>
+                </a>
+                <p className="text-xs sm:text-[13px] text-slate-400 font-medium">
+                  Send your tyre size and location for a quick response.
+                </p>
+              </div>
+            </div>
 
             {/* Fast Benefit Tags */}
             <div className="grid grid-cols-2 gap-3 max-w-md mx-auto lg:mx-0 text-left pt-1">
@@ -82,52 +136,16 @@ const LandingHero = () => {
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-200">
                 <CheckCircle2 className="w-4 h-4 text-[#FB7E10] shrink-0" />
-                <span>30–60 Min Rapid Arrival</span>
+                <span>On-Site Wheel Balancing</span>
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-200">
                 <CheckCircle2 className="w-4 h-4 text-[#FB7E10] shrink-0" />
-                <span>All Tyre Sizes Carried</span>
+                <span>24/7 Emergency Dispatch</span>
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-200">
                 <CheckCircle2 className="w-4 h-4 text-[#FB7E10] shrink-0" />
-                <span>Motorway & Roadside Safe</span>
+                <span>Major Tyre Brands & Sizes</span>
               </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 pt-2 justify-center lg:justify-start">
-              {/* Primary Call CTA */}
-              <div className="w-full sm:w-auto animate-zoom-pulse sm:order-2">
-                <a
-                  href="tel:02071013856"
-                  data-conversion="phone-call"
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-r from-[#FB7E10] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-5 sm:px-8 py-3.5 sm:py-5 rounded-2xl font-black text-[15px] min-[380px]:text-base sm:text-xl uppercase tracking-wide sm:tracking-wider whitespace-nowrap shadow-2xl shadow-orange-500/30 active:scale-95 transition-all text-center border border-orange-400/30"
-                >
-                  <Phone size={24} className="w-[18px] h-[18px] sm:w-6 sm:h-6 shrink-0 fill-current animate-bounce" />
-                  <span>CALL NOW — 0207 101 3856</span>
-                </a>
-              </div>
-
-              {/* Secondary Check Availability CTA */}
-              <a
-                href="#postcode-checker"
-                data-conversion="availability-check"
-                className="w-full sm:w-auto sm:order-1 flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 px-5 sm:px-7 py-3.5 sm:py-5 rounded-2xl font-bold text-sm min-[380px]:text-base uppercase tracking-wide sm:tracking-wider whitespace-nowrap transition-all shadow-lg active:scale-95 text-center backdrop-blur-md"
-              >
-                <Calendar size={20} className="w-[17px] h-[17px] sm:w-5 sm:h-5 shrink-0 text-[#FB7E10]" />
-                <span>CHECK AVAILABILITY</span>
-              </a>
-            </div>
-
-            {/* Under the buttons trust line */}
-            <div className="pt-2 text-xs sm:text-sm font-black uppercase tracking-widest text-[#FB7E10] flex items-center justify-center lg:justify-start gap-2 flex-wrap">
-              <span>24/7 SERVICE</span>
-              <span className="text-white/40">•</span>
-              <span>HOME</span>
-              <span className="text-white/40">•</span>
-              <span>WORK</span>
-              <span className="text-white/40">•</span>
-              <span>ROADSIDE</span>
             </div>
 
           </div>

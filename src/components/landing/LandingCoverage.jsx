@@ -4,17 +4,22 @@ import React from 'react';
 import { MapPin, Phone, Navigation, Radio } from 'lucide-react';
 
 const primaryTowns = [
-  'Aldershot', 'Farnham', 'Fleet', 'Camberley', 'Guildford', 
+  'Aldershot', 'Farnham', 'Fleet', 'Camberley', 'Guildford',
   'Woking', 'Basingstoke', 'Farnborough', 'Bracknell', 'Reading',
   'Slough', 'Maidenhead', 'Godalming', 'Alton', 'Ascot', 'Eton',
-  'Windsor', 'Haslemere', 'Hook', 'Sandhurst', 'Yateley', 'Newbury'
+  'Windsor', 'Haslemere', 'Hook', 'Sandhurst', 'Yateley', 'Newbury',
+  'Portsmouth', 'Southampton'
 ];
 
-const counties = [
-  { name: 'Surrey', tag: 'Vans Active', towns: 'Guildford, Farnham, Camberley, Woking, Godalming, Haslemere, Frimley, Bagshot' },
-  { name: 'Hampshire', tag: 'Vans Active', towns: 'Aldershot, Basingstoke, Farnborough, Fleet, Alton, Bordon, Petersfield' },
-  { name: 'Berkshire', tag: 'Vans Active', towns: 'Reading, Bracknell, Slough, Maidenhead, Windsor, Ascot, Sandhurst' },
-  { name: 'Motorways & Roads', tag: 'Safe Emergency', towns: 'M25, M3, M4, A3, A31, A331 (Safe roadside & hard-shoulder callouts)' }
+// The six priority towns for this page. Each card carries the surrounding areas the
+// same van covers, so a visitor from a neighbouring town still sees themselves here.
+const targetLocations = [
+  { name: 'Camberley', county: 'Surrey', nearby: 'Frimley, Bagshot, Lightwater, Deepcut, Blackwater — M3 J3–J4, A30' },
+  { name: 'Farnborough', county: 'Hampshire', nearby: 'Aldershot, Cove, Ash Vale, Mytchett, Farnham — M3 J4, A331' },
+  { name: 'Yateley', county: 'Hampshire', nearby: 'Blackwater, Hawley, Eversley, Fleet, Hartley Wintney — M3 J4a' },
+  { name: 'Guildford', county: 'Surrey', nearby: 'Godalming, Woking, Merrow, Burpham, Ripley — A3, A31' },
+  { name: 'Portsmouth', county: 'Hampshire', nearby: 'Southsea, Cosham, Havant, Fareham, Waterlooville — M27, A3(M)' },
+  { name: 'Southampton', county: 'Hampshire', nearby: 'Eastleigh, Totton, Hedge End, Romsey, Chandler’s Ford — M27, M3' }
 ];
 
 const LandingCoverage = () => {
@@ -32,32 +37,42 @@ const LandingCoverage = () => {
             24/7 Mobile Tyre Coverage Areas
           </h2>
           <p className="mt-3 text-gray-500 text-base sm:text-lg">
-            Rapid mobile tyre fitting and emergency roadside recovery across Surrey, Hampshire, Berkshire & connecting motorways.
+            Rapid mobile tyre fitting and emergency roadside recovery across Camberley, Farnborough, Yateley, Guildford, Portsmouth, Southampton & the connecting motorway network.
           </p>
         </div>
 
-        {/* Counties Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
-          {counties.map((c, i) => (
+        {/* Target Locations Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
+          {targetLocations.map((loc) => (
             <div
-              key={i}
-              id={`areas-${c.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`}
+              key={loc.name}
+              id={`areas-${loc.name.toLowerCase()}`}
               className="scroll-mt-28 lg:scroll-mt-32 bg-gray-50 hover:bg-white border border-gray-200 hover:border-[#FB7E10]/30 rounded-3xl p-6 transition-all duration-300 space-y-4 shadow-sm hover:shadow-lg group"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 text-[#FB7E10] font-black text-lg">
-                  <MapPin size={20} />
-                  <span>{c.name}</span>
+                  <MapPin size={20} className="shrink-0" />
+                  <span>{loc.name}</span>
                 </div>
-                <span className="text-[10px] font-bold text-[#FB7E10] bg-[#FB7E10]/10 border border-[#FB7E10]/20 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                  {c.tag}
+                <span className="text-[10px] font-bold text-[#FB7E10] bg-[#FB7E10]/10 border border-[#FB7E10]/20 px-2.5 py-1 rounded-full uppercase tracking-wider whitespace-nowrap">
+                  {loc.county}
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
-                {c.towns}
+                Mobile tyre fitting in {loc.name} and {loc.nearby}
               </p>
             </div>
           ))}
+        </div>
+
+        {/* Motorway & trunk road callouts */}
+        <div className="mb-10 bg-gray-900 text-white rounded-3xl px-6 py-5 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center shadow-lg">
+          <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-[#FB7E10] whitespace-nowrap">
+            Motorways & Trunk Roads
+          </span>
+          <span className="text-xs sm:text-sm text-slate-300 font-medium">
+            M3, M27, M25, M4, A3, A3(M), A31, A331 — safe roadside & hard-shoulder callouts
+          </span>
         </div>
 
         {/* Primary Town Badges */}

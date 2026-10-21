@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Phone, Calendar, ArrowRight, Clock, ShieldCheck, MessageSquare, Zap } from 'lucide-react';
-import { SERVICE_AREAS_TEXT } from '@/lib/siteText';
+import { Phone, Calendar } from 'lucide-react';
 
 const LandingFinalCTA = () => {
   return (
@@ -32,21 +31,25 @@ const LandingFinalCTA = () => {
             <span>24/7 RAPID MOBILE TYRE RESPONSE</span>
           </div>
 
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight">
-            STILL STUCK?<br />
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white leading-[1.05] tracking-tight">
+            ONE CALL COULD GET YOUR<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FB7E10] to-orange-400">
-              LET'S GET YOU MOVING.
+              JOURNEY MOVING AGAIN.
             </span>
           </h2>
 
           <p className="text-slate-300 text-base sm:text-lg md:text-xl font-normal leading-relaxed">
-            24/7 mobile tyre fitting at your location. Certified technicians arrive with new tyres and digital balancing in <strong className="text-white">30–60 minutes</strong> across {SERVICE_AREAS_TEXT}.
+            Whether you've got a flat tyre on the way to work, a blowout near the motorway or tyres that need replacing on your driveway, Mobile Tyre Champions brings professional fitting directly to you.
+          </p>
+
+          <p className="text-white text-base sm:text-lg font-black tracking-tight">
+            24 hours a day. 7 days a week. Across Surrey and Hampshire.
           </p>
 
           {/* Big Phone Number Display */}
           <div className="pt-2">
             <span className="text-xs uppercase tracking-widest text-[#FB7E10] font-black block mb-1">
-              Direct On-Duty Emergency Line:
+              24/7 Emergency Tyre Assistance
             </span>
             <a
               href="tel:02071013856"
@@ -79,6 +82,11 @@ const LandingFinalCTA = () => {
               <span>CHECK AVAILABILITY</span>
             </a>
           </div>
+
+          {/* Closing reassurance line */}
+          <p className="pt-1 text-sm sm:text-base font-bold text-slate-300">
+            No upfront payment. Clear pricing. Mobile fitting at your location.
+          </p>
 
         </div>
 
