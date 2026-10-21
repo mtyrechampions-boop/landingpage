@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Phone, MessageSquare, ArrowRight, CheckCircle2, MapPin } from 'lucide-react';
 import { validateUKPostcode } from '../../api/appointmentService';
 
@@ -11,6 +12,17 @@ const WHATSAPP_HREF =
 const LandingHero = () => {
   const [postcode, setPostcode] = useState('');
   const [error, setError] = useState('');
+  // The background video is only mounted on desktop so phones and tablets never
+  // download the MP4 — they get the lighter fitter photo instead.
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const update = () => setIsDesktop(desktop.matches);
+    update();
+    desktop.addEventListener('change', update);
+    return () => desktop.removeEventListener('change', update);
+  }, []);
 
   const handlePostcodeSubmit = (e) => {
     e.preventDefault();
@@ -27,20 +39,31 @@ const LandingHero = () => {
 
   return (
     <section id="top" className="relative bg-[#0A0A0A] text-white pt-8 pb-16 lg:pt-16 lg:pb-24 overflow-hidden border-b border-white/10">
-      {/* Background Video */}
+      {/* Background: fitter photo on mobile & tablet, video on desktop */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover scale-[1.22] origin-top"
-        >
-          <source src="/mtc-hero-video.mp4" type="video/mp4" />
-        </video>
-        {/* Subtle gradient overlay to make text crisp while keeping video vivid & bright */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/35" />
+        <Image
+          src="/images/mtc-hero-mobile.webp"
+          alt=""
+          fill
+          priority
+          sizes="(max-width: 1023px) 100vw, 1px"
+          className="object-cover object-[center_35%] lg:hidden"
+        />
+        {isDesktop && (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="hidden lg:block absolute inset-0 w-full h-full object-cover scale-[1.22] origin-top"
+          >
+            <source src="/mtc-hero-video.mp4" type="video/mp4" />
+          </video>
+        )}
+        {/* Gradient overlay keeps the headline crisp over both backgrounds; heavier
+            at the top on mobile where the text sits over the photo */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/70 lg:bg-gradient-to-r lg:from-black/75 lg:via-black/45 lg:to-black/35" />
       </div>
 
       {/* Background ambient lighting */}
@@ -83,7 +106,7 @@ const LandingHero = () => {
             </p>
 
             <p className="text-sm sm:text-base text-slate-400 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              <strong className="text-white font-bold">Typical arrival: 30–60 minutes</strong>, depending on your location, van availability and live traffic conditions. We'll confirm your estimated arrival time when your job is dispatched.
+              <strong className="text-white font-bold">Estimated arrival time is 30–60 minutes</strong>, subject to location and traffic.
             </p>
 
             {/* The three objections, answered up front */}

@@ -274,11 +274,10 @@ const LandingCorridors = () => {
                   onFocus={() => setActive(corridor.id)}
                   onBlur={() => setActive(null)}
                   tabIndex={0}
-                  className={`rounded-3xl p-6 sm:p-7 border-2 transition-all duration-300 outline-none ${
-                    isActive
+                  className={`rounded-3xl p-6 sm:p-7 border-2 transition-all duration-300 outline-none ${isActive
                       ? 'bg-white border-[#FB7E10]/50 shadow-xl shadow-orange-500/10 -translate-y-0.5'
                       : 'bg-gray-50 border-gray-200 hover:border-[#FB7E10]/30'
-                  } focus-visible:ring-2 focus-visible:ring-[#FB7E10] focus-visible:ring-offset-2`}
+                    } focus-visible:ring-2 focus-visible:ring-[#FB7E10] focus-visible:ring-offset-2`}
                 >
                   <h3 className="flex items-center gap-2 text-lg sm:text-xl font-black text-gray-900 tracking-tight">
                     <MapPin size={20} className="text-[#FB7E10] shrink-0" />

@@ -123,7 +123,7 @@ const LandingWhyGarage = () => {
               target="_blank"
               rel="noopener noreferrer"
               data-conversion="whatsapp"
-              className="flex items-center justify-center gap-2 bg-[#22C55E] hover:bg-green-600 text-white px-6 py-4 rounded-2xl text-sm font-black uppercase tracking-wider transition-all shadow-lg shadow-green-500/20 active:scale-95"
+              className="flex items-center justify-center gap-2 bg-[#FB7E10] hover:bg-orange-600 text-white px-6 py-4 rounded-2xl text-sm font-black uppercase tracking-wider transition-all shadow-lg shadow-orange-500/20 active:scale-95"
             >
               <MessageSquare size={16} className="shrink-0" />
               <span>Get My Tyre Fitting Quote</span>
