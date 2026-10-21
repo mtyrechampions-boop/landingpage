@@ -27,11 +27,6 @@ const LandingPostcodeChecker = () => {
           <PostcodeAvailabilityForm variant="light" source="postcode-checker" buttonLabel="Check now" />
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-gray-400">
-          <span>⏱ Results in seconds</span>
-          <span>📍 Service area confirmed</span>
-          <span>🔒 No obligation</span>
-        </div>
 
       </div>
     </section>

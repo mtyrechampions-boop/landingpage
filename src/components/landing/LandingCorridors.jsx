@@ -133,11 +133,6 @@ const LandingCorridors = () => {
                   <p className="mt-3 text-sm sm:text-base text-gray-500 leading-relaxed">
                     {corridor.body}
                   </p>
-
-                  <p className="mt-4 pt-3 border-t border-gray-200 text-xs sm:text-sm font-bold text-gray-700">
-                    <span className="text-[#FB7E10] uppercase tracking-wider">Coverage: </span>
-                    {corridor.coverage}
-                  </p>
                 </article>
               );
             })}
