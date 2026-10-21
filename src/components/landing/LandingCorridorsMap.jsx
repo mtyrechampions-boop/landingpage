@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ExternalLink, Loader2, MapPin } from 'lucide-react';
+import { ExternalLink, Loader2, MapPin, Phone } from 'lucide-react';
 import { loadGoogleMaps } from '../../lib/googleMapsLoader';
 
 const ORANGE = '#FB7E10';
@@ -10,10 +10,9 @@ const LAND = '#eef2f6';
 const MUTED = '#475569';
 const EDGE = '#CBD5E1';
 
-// The service area promised on the page and used by the postcode checker (see lib/coverage.js).
+// 40-mile service radius from Aldershot hub
 const SERVICE_RADIUS_METRES = 40 * 1609.344;
 
-// Points of a circle around `centre`, as { lat, lng } going clockwise.
 const circlePath = (centre, radiusMetres, steps = 180) => {
   const R = 6371000;
   const toRad = (d) => (d * Math.PI) / 180;
@@ -29,44 +28,54 @@ const circlePath = (centre, radiusMetres, steps = 180) => {
   });
 };
 
-const HUB = { name: 'Aldershot', lat: 51.2484, lng: -0.756 };
+export const HUB = {
+  name: 'Aldershot',
+  region: 'Hampshire',
+  postcode: 'GU11',
+  lat: 51.2484,
+  lng: -0.756,
+  isHub: true,
+};
 
-// `dir` is the side of the pin the label sits on, chosen so neighbouring towns don't collide.
-const TOWNS = [
-  { name: 'Yateley', lat: 51.341, lng: -0.828, corridor: 'camberley-yateley', dir: 'left' },
-  { name: 'Camberley', lat: 51.335, lng: -0.743, corridor: 'camberley-yateley', dir: 'right' },
-  { name: 'Farnborough', lat: 51.2905, lng: -0.754, corridor: 'farnborough-aldershot', dir: 'right', crowded: true },
-  { name: 'Guildford', lat: 51.2362, lng: -0.5704, corridor: 'guildford-surrey', dir: 'right' },
-  { name: 'Southampton', lat: 50.9097, lng: -1.4044, corridor: 'portsmouth-southampton', dir: 'top' },
-  { name: 'Portsmouth', lat: 50.8198, lng: -1.088, corridor: 'portsmouth-southampton', dir: 'bottom' },
+// Comprehensive list of all towns and coverage areas
+export const ALL_LOCATIONS = [
+  // Hampshire
+  { name: 'Farnborough', region: 'Hampshire', postcode: 'GU14', lat: 51.2905, lng: -0.754, dir: 'right', primary: true },
+  { name: 'Fleet', region: 'Hampshire', postcode: 'GU51', lat: 51.2834, lng: -0.8456, dir: 'left', primary: true },
+  { name: 'Yateley', region: 'Hampshire', postcode: 'GU46', lat: 51.341, lng: -0.828, dir: 'left', primary: true },
+  { name: 'Blackwater', region: 'Hampshire', postcode: 'GU17', lat: 51.3298, lng: -0.7788, dir: 'top' },
+  { name: 'Basingstoke', region: 'Hampshire', postcode: 'RG21', lat: 51.2667, lng: -1.0876, dir: 'left', primary: true },
+  { name: 'Alton', region: 'Hampshire', postcode: 'GU34', lat: 51.1492, lng: -0.9765, dir: 'bottom', primary: true },
+  { name: 'Hook', region: 'Hampshire', postcode: 'RG27', lat: 51.282, lng: -0.961, dir: 'top' },
+  { name: 'Winchester', region: 'Hampshire', postcode: 'SO22', lat: 51.0632, lng: -1.308, dir: 'left', primary: true },
+  { name: 'Southampton', region: 'South Coast', postcode: 'SO14', lat: 50.9097, lng: -1.4044, dir: 'bottom', primary: true },
+  { name: 'Portsmouth', region: 'South Coast', postcode: 'PO1', lat: 50.8198, lng: -1.088, dir: 'bottom', primary: true },
+  { name: 'Fareham', region: 'South Coast', postcode: 'PO16', lat: 50.854, lng: -1.1798, dir: 'bottom', primary: true },
+  { name: 'Havant', region: 'South Coast', postcode: 'PO9', lat: 50.852, lng: -0.985, dir: 'bottom' },
+
+  // Surrey
+  { name: 'Camberley', region: 'Surrey', postcode: 'GU15', lat: 51.335, lng: -0.743, dir: 'right', primary: true },
+  { name: 'Frimley', region: 'Surrey', postcode: 'GU16', lat: 51.3142, lng: -0.7397, dir: 'right' },
+  { name: 'Farnham', region: 'Surrey', postcode: 'GU9', lat: 51.2144, lng: -0.7983, dir: 'left', primary: true },
+  { name: 'Guildford', region: 'Surrey', postcode: 'GU1', lat: 51.2362, lng: -0.5704, dir: 'right', primary: true },
+  { name: 'Woking', region: 'Surrey', postcode: 'GU21', lat: 51.3168, lng: -0.56, dir: 'right', primary: true },
+  { name: 'Godalming', region: 'Surrey', postcode: 'GU7', lat: 51.1857, lng: -0.6137, dir: 'bottom', primary: true },
+  { name: 'Haslemere', region: 'Surrey', postcode: 'GU27', lat: 51.0886, lng: -0.7126, dir: 'bottom', primary: true },
+  { name: 'Bagshot', region: 'Surrey', postcode: 'GU19', lat: 51.363, lng: -0.689, dir: 'right' },
+
+  // Berkshire
+  { name: 'Bracknell', region: 'Berkshire', postcode: 'RG12', lat: 51.416, lng: -0.749, dir: 'top', primary: true },
+  { name: 'Ascot', region: 'Berkshire', postcode: 'SL5', lat: 51.41, lng: -0.67, dir: 'right', primary: true },
+  { name: 'Reading', region: 'Berkshire', postcode: 'RG1', lat: 51.4543, lng: -0.9781, dir: 'top', primary: true },
+  { name: 'Wokingham', region: 'Berkshire', postcode: 'RG40', lat: 51.41, lng: -0.835, dir: 'top' },
+  { name: 'Sandhurst', region: 'Berkshire', postcode: 'GU47', lat: 51.35, lng: -0.8, dir: 'top' },
+  { name: 'Windsor', region: 'Berkshire', postcode: 'SL4', lat: 51.4839, lng: -0.6044, dir: 'top', primary: true },
+  { name: 'Slough', region: 'Berkshire', postcode: 'SL1', lat: 51.5105, lng: -0.595, dir: 'top', primary: true },
+  { name: 'Maidenhead', region: 'Berkshire', postcode: 'SL6', lat: 51.5218, lng: -0.718, dir: 'top', primary: true },
+  { name: 'Newbury', region: 'Berkshire', postcode: 'RG14', lat: 51.401, lng: -1.323, dir: 'left', primary: true },
 ];
 
-const point = (name) => (name === HUB.name ? HUB : TOWNS.find((t) => t.name === name));
-
-// Straight legs between towns. The map is indicative of the corridors we cover, not of exact road geometry.
-const ROUTES = [
-  { corridor: 'farnborough-aldershot', stops: ['Aldershot', 'Farnborough'] },
-  { corridor: 'camberley-yateley', stops: ['Farnborough', 'Camberley'] },
-  { corridor: 'camberley-yateley', stops: ['Farnborough', 'Yateley'] },
-  { corridor: 'guildford-surrey', stops: ['Aldershot', 'Guildford'] },
-  { corridor: 'portsmouth-southampton', stops: ['Aldershot', 'Southampton'] },
-  { corridor: 'portsmouth-southampton', stops: ['Aldershot', 'Portsmouth'] },
-  { corridor: 'portsmouth-southampton', stops: ['Southampton', 'Portsmouth'] },
-];
-
-// `minZoom` hides a shield at rest when it would crowd the town labels; hovering its corridor or
-// zooming in brings it back.
-const SHIELDS = [
-  { id: 'A30', lat: 51.346, lng: -0.79, corridor: 'camberley-yateley', minZoom: 11 },
-  { id: 'M3 J4', lat: 51.315, lng: -0.742, corridor: 'camberley-yateley', minZoom: 11 },
-  { id: 'A331', lat: 51.268, lng: -0.764, corridor: 'farnborough-aldershot', minZoom: 11 },
-  { id: 'A31', lat: 51.2437, lng: -0.684, corridor: 'guildford-surrey', minZoom: 0 },
-  { id: 'M3', lat: 51.08, lng: -1.09, corridor: 'portsmouth-southampton', minZoom: 0 },
-  { id: 'A3', lat: 51.03, lng: -0.925, corridor: 'portsmouth-southampton', minZoom: 0 },
-  { id: 'M27', lat: 50.849, lng: -1.19, corridor: 'portsmouth-southampton', minZoom: 0 },
-];
-
-// Light, low-noise map: white roads, warm motorways, pale water, so the orange coverage reads clearly.
+// Clean light styling for maximum clarity
 const LIGHT_STYLE = [
   { elementType: 'geometry', stylers: [{ color: '#f4f6f9' }] },
   { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
@@ -75,7 +84,6 @@ const LIGHT_STYLE = [
   { featureType: 'poi', stylers: [{ visibility: 'off' }] },
   { featureType: 'transit', stylers: [{ visibility: 'off' }] },
   { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: EDGE }] },
-  // Our own pins label the towns we serve; Google's town names would print on top of them.
   { featureType: 'administrative.locality', elementType: 'labels', stylers: [{ visibility: 'off' }] },
   { featureType: 'landscape.natural', elementType: 'geometry', stylers: [{ color: LAND }] },
   { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
@@ -88,49 +96,38 @@ const LIGHT_STYLE = [
 ];
 
 const LABEL_POSITION = {
-  top: 'bottom:15px;left:50%;transform:translateX(-50%)',
-  bottom: 'top:15px;left:50%;transform:translateX(-50%)',
-  left: 'right:16px;top:50%;transform:translateY(-50%)',
-  right: 'left:16px;top:50%;transform:translateY(-50%)',
+  top: 'bottom:12px;left:50%;transform:translateX(-50%)',
+  bottom: 'top:12px;left:50%;transform:translateX(-50%)',
+  left: 'right:14px;top:50%;transform:translateY(-50%)',
+  right: 'left:14px;top:50%;transform:translateY(-50%)',
 };
 
-const LABEL_FONT = `font:800 13px Outfit,system-ui,sans-serif;color:${INK};white-space:nowrap;text-shadow:0 0 3px #fff,0 0 6px #fff,0 1px 2px #fff`;
+const LABEL_FONT = `font:800 12px Outfit,system-ui,sans-serif;color:${INK};white-space:nowrap;text-shadow:0 0 3px #fff,0 0 6px #fff,0 1px 2px #fff`;
 
-const townHtml = (town) => `<div style="position:relative;transition:opacity .3s">
-  <span data-accent style="position:absolute;left:-8px;top:-8px;width:16px;height:16px;border-radius:9999px;background:#fff;border:3px solid ${ORANGE};box-shadow:0 0 0 4px rgba(251,126,16,.22),0 1px 4px rgba(15,23,42,.35);cursor:pointer"></span>
-  <span data-label style="position:absolute;${LABEL_POSITION[town.dir]};${LABEL_FONT};transition:opacity .3s">${town.name}</span>
+const townHtml = (town) => `
+<div style="position:relative;cursor:pointer" title="${town.name} (${town.postcode}) - Mobile Tyre Service Area">
+  <span data-accent style="position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:9999px;background:#fff;border:3px solid ${ORANGE};box-shadow:0 0 0 3px rgba(251,126,16,.2),0 1px 4px rgba(15,23,42,.3)"></span>
+  <span data-label style="position:absolute;${LABEL_POSITION[town.dir]};${LABEL_FONT};transition:opacity .25s">${town.name}</span>
 </div>`;
 
-const hubHtml = () => `<div style="position:relative">
+const hubHtml = () => `
+<div style="position:relative;cursor:pointer" title="Aldershot Operating Hub - Central Dispatch">
   <span class="animate-ping" style="position:absolute;left:-20px;top:-20px;width:40px;height:40px;border-radius:9999px;background:rgba(251,126,16,.4)"></span>
   <span style="position:absolute;left:-12px;top:-12px;width:24px;height:24px;border-radius:9999px;background:${ORANGE};border:4px solid #fff;box-shadow:0 0 0 3px rgba(251,126,16,.35),0 2px 8px rgba(15,23,42,.45)"></span>
-  <span style="position:absolute;right:20px;top:50%;transform:translateY(-62%);text-align:right;white-space:nowrap;text-shadow:0 0 3px #fff,0 0 6px #fff,0 1px 2px #fff">
+  <span style="position:absolute;right:18px;top:50%;transform:translateY(-62%);text-align:right;white-space:nowrap;text-shadow:0 0 3px #fff,0 0 6px #fff,0 1px 2px #fff">
     <span style="display:block;font:900 16px Outfit,system-ui,sans-serif;color:${INK}">Aldershot</span>
     <span style="display:block;font:800 9px Outfit,system-ui,sans-serif;letter-spacing:.18em;color:#D96A00">OPERATING HUB</span>
   </span>
 </div>`;
 
-const shieldHtml = (id) => `<div style="position:relative;transition:opacity .3s">
-  <span data-accent style="position:absolute;left:0;top:0;transform:translate(-50%,-50%);white-space:nowrap;padding:2px 7px;border-radius:7px;background:#fff;border:1.5px solid ${EDGE};color:${MUTED};box-shadow:0 1px 3px rgba(15,23,42,.18);font:800 11px Outfit,system-ui,sans-serif;transition:color .3s,border-color .3s">${id}</span>
-</div>`;
-
-const lineStyle = (state) => {
-  if (state === 'live') return { strokeColor: ORANGE, strokeOpacity: 1, strokeWeight: 5 };
-  if (state === 'dim') return { strokeColor: '#94A3B8', strokeOpacity: 0.55, strokeWeight: 3 };
-  return { strokeColor: ORANGE, strokeOpacity: 0.85, strokeWeight: 3.5 };
-};
-
-// Google's OverlayView lets the pins be the same HTML as before, anchored to a map position.
 const createHtmlOverlayClass = (google) =>
   class HtmlOverlay extends google.maps.OverlayView {
-    constructor({ position, html, interactive = false, onEnter, onLeave, onClick }) {
+    constructor({ position, html, interactive = false, onClick }) {
       super();
       this.position = new google.maps.LatLng(position.lat, position.lng);
       this.root = document.createElement('div');
       this.root.style.cssText = `position:absolute;width:0;height:0;${interactive ? 'pointer-events:auto;cursor:pointer' : 'pointer-events:none'}`;
       this.root.innerHTML = html;
-      if (onEnter) this.root.addEventListener('mouseenter', onEnter);
-      if (onLeave) this.root.addEventListener('mouseleave', onLeave);
       if (onClick) this.root.addEventListener('click', onClick);
     }
 
@@ -157,15 +154,12 @@ const MESSAGES = {
   load: 'The map could not be loaded.',
 };
 
-const LandingCorridorsMap = ({ active, onActiveChange }) => {
+const LandingCorridorsMap = ({ activeRegion, onLocationSelect }) => {
   const containerRef = useRef(null);
-  const applyRef = useRef(null);
-  const onChangeRef = useRef(onActiveChange);
-  const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'no-key' | 'auth' | 'load'
-
-  useEffect(() => {
-    onChangeRef.current = onActiveChange;
-  }, [onActiveChange]);
+  const [status, setStatus] = useState('loading');
+  const [selectedTown, setSelectedTown] = useState(null);
+  const mapInstanceRef = useRef(null);
+  const filterRegionRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -176,20 +170,24 @@ const LandingCorridorsMap = ({ active, onActiveChange }) => {
         if (cancelled || !containerRef.current) return;
 
         const map = new google.maps.Map(containerRef.current, {
-          center: { lat: HUB.lat, lng: HUB.lng },
+          center: { lat: 51.2484, lng: -0.756 },
           zoom: 9,
-          minZoom: 7,
-          maxZoom: 14,
           styles: LIGHT_STYLE,
-          backgroundColor: LAND,
-          disableDefaultUI: true,
+          disableDefaultUI: false,
           zoomControl: true,
-          gestureHandling: 'cooperative', // page scroll and one-finger swipes are never hijacked
+          zoomControlOptions: {
+            position: google.maps.ControlPosition.RIGHT_CENTER,
+          },
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: true,
+          gestureHandling: 'cooperative',
           clickableIcons: false,
         });
 
-        // Coverage highlight: the map is faded back outside the service area (a big rectangle with a
-        // circular hole) and the edge is outlined, so inside stays clear and full-colour.
+        mapInstanceRef.current = map;
+
+        // Faded mask outside 40-mile service radius
         const outsideMask = new google.maps.Polygon({
           map,
           paths: [
@@ -207,117 +205,83 @@ const LandingCorridorsMap = ({ active, onActiveChange }) => {
           clickable: false,
           zIndex: 0,
         });
+
+        // 40-mile service radius circular boundary
         const serviceEdge = new google.maps.Circle({
           map,
           center: { lat: HUB.lat, lng: HUB.lng },
           radius: SERVICE_RADIUS_METRES,
           strokeColor: ORANGE,
           strokeOpacity: 0.95,
-          strokeWeight: 2.5,
+          strokeWeight: 2,
           fillColor: ORANGE,
-          fillOpacity: 0.05,
+          fillOpacity: 0.04,
           clickable: false,
           zIndex: 0,
-        });
-        const areas = [outsideMask, serviceEdge];
-
-        const routes = ROUTES.map((route) => {
-          const path = route.stops.map((name) => {
-            const p = point(name);
-            return { lat: p.lat, lng: p.lng };
-          });
-          const glow = new google.maps.Polyline({ map, path, strokeColor: ORANGE, strokeOpacity: 0, strokeWeight: 14, clickable: false, zIndex: 1 });
-          const line = new google.maps.Polyline({ map, path, ...lineStyle('rest'), clickable: false, zIndex: 2 });
-          return { corridor: route.corridor, glow, line };
         });
 
         const HtmlOverlay = createHtmlOverlayClass(google);
         const overlays = [];
         const pins = [];
-        const add = (config, extra) => {
-          const overlay = new HtmlOverlay(config);
+
+        const addOverlay = (item, isHub = false) => {
+          const overlay = new HtmlOverlay({
+            position: item,
+            html: isHub ? hubHtml() : townHtml(item),
+            interactive: true,
+            onClick: (e) => {
+              e.stopPropagation();
+              setSelectedTown(item);
+              if (onLocationSelect) onLocationSelect(item);
+            },
+          });
           overlay.setMap(map);
           overlays.push(overlay);
-          if (extra) pins.push({ overlay, ...extra });
+          pins.push({ overlay, ...item });
         };
 
-        SHIELDS.forEach((s) =>
-          add({ position: s, html: shieldHtml(s.id) }, { corridor: s.corridor, minZoom: s.minZoom })
-        );
-        TOWNS.forEach((town) =>
-          add(
-            {
-              position: town,
-              html: townHtml(town),
-              interactive: true,
-              onEnter: () => onChangeRef.current(town.corridor),
-              onLeave: () => onChangeRef.current(null),
-              onClick: (event) => {
-                event.stopPropagation();
-                onChangeRef.current(town.corridor);
-              },
-            },
-            { corridor: town.corridor, minZoom: 0, crowded: Boolean(town.crowded) }
-          )
-        );
-        add({ position: HUB, html: hubHtml() });
+        // Add Hub
+        addOverlay(HUB, true);
 
-        map.addListener('click', () => onChangeRef.current(null));
+        // Add all coverage towns
+        ALL_LOCATIONS.forEach((town) => {
+          addOverlay(town);
+        });
 
-        let currentActive = null;
-        applyRef.current = (activeId) => {
-          currentActive = activeId;
-          const zoom = map.getZoom() ?? 9;
+        map.addListener('click', () => {
+          setSelectedTown(null);
+        });
 
-          routes.forEach(({ corridor, glow, line }) => {
-            const state = !activeId ? 'rest' : activeId === corridor ? 'live' : 'dim';
-            line.setOptions({ ...lineStyle(state), zIndex: state === 'live' ? 4 : 2 });
-            glow.setOptions({ strokeOpacity: state === 'live' ? 0.3 : 0, zIndex: state === 'live' ? 3 : 1 });
-          });
-
-          // On a narrow map the whole region fits in ~330px, so a few labels would print on top of each
-          // other. Those are hidden until the map is zoomed in or their corridor is active.
-          const narrow = (containerRef.current?.clientWidth ?? 600) < 480;
-
-          pins.forEach(({ corridor, overlay, minZoom, crowded }) => {
-            const el = overlay.root.firstElementChild;
-            if (!el) return;
-            const state = !activeId ? 'rest' : activeId === corridor ? 'live' : 'dim';
-            const hidden = state !== 'live' && zoom < minZoom;
-            el.style.opacity = hidden ? '0' : state === 'dim' ? '0.3' : '1';
-            const label = el.querySelector('[data-label]');
-            if (label) label.style.opacity = crowded && narrow && state !== 'live' && zoom < 10.5 ? '0' : '1';
-            const accent = el.querySelector('[data-accent]');
-            if (accent && accent.textContent.trim()) {
-              accent.style.color = state === 'live' ? '#D96A00' : MUTED;
-              accent.style.borderColor = state === 'live' ? ORANGE : EDGE;
-            }
-          });
-        };
-
-        map.addListener('zoom_changed', () => applyRef.current?.(currentActive));
-
-        // The standard map only zooms in whole steps, so the view is either tight (towns legible, service
-        // area outline partly cut off) or wide (whole circle, but labels collide). Towns win. On a wider
-        // map there is room for a little extra to the north and east, which shows more of the outline.
-        const fit = () => {
+        // Dynamic region filtering and bounds fitting
+        filterRegionRef.current = (region) => {
           const bounds = new google.maps.LatLngBounds();
           bounds.extend({ lat: HUB.lat, lng: HUB.lng });
-          TOWNS.forEach((t) => bounds.extend({ lat: t.lat, lng: t.lng }));
-          if ((containerRef.current?.clientWidth ?? 0) >= 480) {
-            bounds.extend({ lat: HUB.lat + 0.3, lng: HUB.lng });
-            bounds.extend({ lat: HUB.lat, lng: HUB.lng + 0.4 });
-          }
-          map.fitBounds(bounds, 48);
-        };
-        fit();
-        google.maps.event.addListenerOnce(map, 'idle', () => applyRef.current?.(null));
 
-        // Refit when the container changes size, e.g. rotating a phone or resizing the window.
+          const filtered = !region || region === 'all'
+            ? ALL_LOCATIONS
+            : ALL_LOCATIONS.filter((t) => t.region === region);
+
+          filtered.forEach((t) => bounds.extend({ lat: t.lat, lng: t.lng }));
+          map.fitBounds(bounds, { top: 50, right: 50, bottom: 50, left: 50 });
+
+          // Update pin opacity based on region filter
+          pins.forEach(({ overlay, region: townRegion, isHub }) => {
+            const el = overlay.root.firstElementChild;
+            if (!el || isHub) return;
+            const matches = !region || region === 'all' || townRegion === region;
+            el.style.opacity = matches ? '1' : '0.25';
+          });
+        };
+
+        const fit = () => {
+          filterRegionRef.current(activeRegion);
+        };
+
+        fit();
+
         const observer = new ResizeObserver(() => {
           google.maps.event.trigger(map, 'resize');
           fit();
-          applyRef.current?.(currentActive);
         });
         observer.observe(containerRef.current);
 
@@ -325,13 +289,10 @@ const LandingCorridorsMap = ({ active, onActiveChange }) => {
         cleanup = () => {
           observer.disconnect();
           overlays.forEach((o) => o.setMap(null));
-          areas.forEach((a) => a.setMap(null));
-          routes.forEach(({ glow, line }) => {
-            glow.setMap(null);
-            line.setMap(null);
-          });
+          outsideMask.setMap(null);
+          serviceEdge.setMap(null);
           google.maps.event.clearInstanceListeners(map);
-          applyRef.current = null;
+          mapInstanceRef.current = null;
         };
       })
       .catch((error) => {
@@ -345,30 +306,31 @@ const LandingCorridorsMap = ({ active, onActiveChange }) => {
   }, []);
 
   useEffect(() => {
-    applyRef.current?.(active);
-  }, [active]);
+    if (filterRegionRef.current) {
+      filterRegionRef.current(activeRegion);
+    }
+  }, [activeRegion]);
 
   return (
     <div className="relative w-full h-full" style={{ background: LAND }}>
       <div
         ref={containerRef}
         role="region"
-        aria-label="Map of the mobile tyre fitting corridors radiating from the Aldershot hub to Yateley, Camberley, Farnborough, Guildford, Southampton and Portsmouth."
+        aria-label="Interactive Google Map showing 24/7 mobile tyre fitting coverage across Surrey, Hampshire, Berkshire and the South Coast"
         className="w-full h-full"
       />
 
       {status === 'loading' && (
         <div role="status" className="absolute inset-0 flex items-center justify-center" style={{ background: LAND }}>
-          <Loader2 size={30} className="animate-spin text-[#FB7E10]" aria-hidden="true" />
-          <span className="sr-only">Loading map</span>
+          <Loader2 size={32} className="animate-spin text-[#FB7E10]" aria-hidden="true" />
+          <span className="sr-only">Loading Google Map</span>
         </div>
       )}
 
       {MESSAGES[status] && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center" style={{ background: LAND }}>
-          <MapPin size={30} className="text-[#FB7E10]" aria-hidden="true" />
+          <MapPin size={32} className="text-[#FB7E10]" aria-hidden="true" />
           <p className="text-sm font-semibold text-slate-700 max-w-xs">{MESSAGES[status]}</p>
-          <p className="text-xs text-slate-500 max-w-xs">We cover Aldershot, Camberley, Farnborough, Guildford, Portsmouth and Southampton.</p>
           <a
             href="https://www.google.com/maps/search/?api=1&query=Mobile+Tyre+Champions+Aldershot"
             target="_blank"
@@ -377,6 +339,42 @@ const LandingCorridorsMap = ({ active, onActiveChange }) => {
           >
             Open in Google Maps <ExternalLink size={12} aria-hidden="true" />
           </a>
+        </div>
+      )}
+
+      {/* Selected Location Popup Card */}
+      {selectedTown && (
+        <div className="absolute top-4 left-4 z-20 bg-white/95 backdrop-blur-md border border-gray-200 rounded-2xl p-4 shadow-xl max-w-xs animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-wider text-[#FB7E10]">
+                {selectedTown.isHub ? 'Central Operating Hub' : `${selectedTown.region} • ${selectedTown.postcode}`}
+              </span>
+              <h4 className="text-base font-black text-gray-900 leading-tight">
+                {selectedTown.name}
+              </h4>
+            </div>
+            <button
+              onClick={() => setSelectedTown(null)}
+              className="text-gray-400 hover:text-gray-600 text-sm font-bold p-1 cursor-pointer"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          </div>
+          <p className="mt-1.5 text-xs text-gray-500 font-medium leading-relaxed">
+            24/7 emergency roadside & mobile tyre replacement. Typical arrival in 30–60 minutes.
+          </p>
+          <div className="mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between gap-2">
+            <span className="text-[11px] font-extrabold text-emerald-600">● 30–60 Min Response</span>
+            <a
+              href="tel:02071013856"
+              className="inline-flex items-center gap-1 bg-[#FB7E10] hover:bg-orange-600 text-white font-black px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider transition-all shadow-md shadow-orange-500/20 active:scale-95"
+            >
+              <Phone size={12} className="fill-current" />
+              <span>Call Van</span>
+            </a>
+          </div>
         </div>
       )}
     </div>

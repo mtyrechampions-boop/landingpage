@@ -100,7 +100,7 @@ const LandingHeader = ({ homeHref = '' }) => {
             </span>
             <span className="text-[11px] font-bold uppercase tracking-wider whitespace-nowrap">
               <span className="sm:hidden">24/7 Dispatch • 30–60 Min Arrival</span>
-              <span className="hidden sm:inline">24/7 Emergency Dispatch Active • 30–60 Min Arrival</span>
+              <span className="hidden sm:inline">24/7 Emergency Available Active • 30–60 Min Arrival</span>
             </span>
           </div>
         </div>
