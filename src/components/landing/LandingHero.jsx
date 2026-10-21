@@ -87,7 +87,7 @@ const LandingHero = () => {
 
             {/* Supporting Copy */}
             <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              Stranded in Camberley, Farnborough, Yateley, Guildford, Portsmouth or Southampton? Our Aldershot-based mobile tyre service dispatches equipped fitting vans directly to your location, whether you're roadside, at home or at work.
+              Stranded in Camberley, Farnborough, Yateley, Guildford, Portsmouth or Southampton? Our Aldershot-based mobile tyre fitters come directly to your home, workplace or roadside.
             </p>
 
             <p className="text-sm sm:text-base text-slate-400 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
